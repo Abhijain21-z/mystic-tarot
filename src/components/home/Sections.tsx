@@ -69,7 +69,7 @@ export function Features() {
     { icon: ScrollText, t: "Detailed card predictions", d: "Summary, deep interpretation, advice, possibilities and cautions for every card." },
     { icon: Heart, t: "Love, career, money & spirit", d: "Four life lenses tailored to each card's position and orientation." },
     { icon: History, t: "Reading history in your profile", d: "Every reading saved with date and time, ready to revisit anytime." },
-    { icon: ShieldCheck, t: "Secure payments & token credits", d: "Stripe-powered checkout. 1 credit = 1 reading. No duplicate charges." },
+    { icon: ShieldCheck, t: "Secure payments & token credits", d: "PayPal-powered checkout. 1 credit = 1 reading. No duplicate charges." },
   ];
   return (
     <section className="relative mx-auto max-w-7xl px-6 py-24">
@@ -106,7 +106,7 @@ export function Pricing() {
           <p className="text-sm uppercase tracking-widest text-magenta">Pay As You Go</p>
           <p className="mt-4 font-display text-6xl">$1 <span className="text-lg text-white/50">USD</span></p>
           <p className="text-white/60">per reading, from the 3rd reading onward</p>
-          <ul className="my-6 space-y-2 text-sm text-white/75">{["1 credit = 1 reading", "Secure Stripe checkout", "Saved to your history"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
+          <ul className="my-6 space-y-2 text-sm text-white/75">{["1 credit = 1 reading", "Secure PayPal checkout", "Saved to your history"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
           <div className="mt-auto"><BuyButton pack="single" className="btn-ghost">Buy 1 Credit — $1</BuyButton></div>
         </div></Reveal>
         <Reveal delay={0.2}><div className="relative flex h-full flex-col rounded-3xl bg-gradient-to-b from-gold/60 via-violet/50 to-magenta/50 p-px">
