@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A quiet, cinematic tarot reading for the questions that stay with you.">
+  <title>Arcana — a reading for what comes next</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Arcana home"><span class="mark">✦</span> ARCANA</a>
+    <nav aria-label="Primary navigation">
+      <a href="#how-it-works">The ritual</a>
+      <a href="#pricing">Tokens</a>
+      <button class="profile-trigger ghost-button" type="button">Your profile</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker">A modern divination studio</p>
+        <h1 id="hero-title">Ask what the<br><em>night knows.</em></h1>
+        <p class="lede">A considered tarot reading for the questions that stay with you.</p>
+        <a class="primary-button" href="#reading" id="begin-button">Begin a reading <span>↗</span></a>
+        <p class="fine-print"><span class="signal-dot"></span> Private by design · No account required</p>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="moon">◐</div><div class="orbit-label north">THE<br>UNKNOWN</div>
+        <div class="orbit-label east">INTUITION</div><div class="orbit-label south">THE<br>ANSWER</div>
+      </div>
+    </section>
+
+    <section class="manifesto wrap" id="how-it-works">
+      <p class="section-number">01 / THE RITUAL</p>
+      <div><h2>Slow down<br>to see clearly.</h2><p>Three quiet steps. One question held with care. The cards are not a verdict — they are a mirror.</p></div>
+      <div class="ritual-steps"><div><span>01</span><strong>Prepare</strong><small>Set an intention.</small></div><div><span>02</span><strong>Select</strong><small>Trust the pull.</small></div><div><span>03</span><strong>Reveal</strong><small>Read between.</small></div></div>
+    </section>
+
+    <section class="reading wrap" id="reading" aria-labelledby="reading-title">
+      <div class="reading-head"><div><p class="section-number">02 / YOUR READING</p><h2 id="reading-title">Make space for<br>the answer.</h2></div><div class="reading-meta"><span id="free-count">2 free readings</span><button class="text-button" id="token-button" type="button">Get tokens ↗</button></div></div>
+      <div class="ritual-stage" id="ritual-stage">
+        <div class="stage-copy"><p class="stage-eyebrow" id="stage-eyebrow">THE DECK IS RESTING</p><h3 id="stage-title">What would you<br>like to ask?</h3><p id="stage-description">Take one breath. Put your question into words, or keep it quietly yours.</p><button class="primary-button" id="spin-button" type="button">Spin the deck <span>↻</span></button></div>
+        <div class="deck-animation" aria-hidden="true"><div class="deck-glow"></div><div class="deck-card card-back"><span>✦</span><b>ARCANA</b><i>✦</i></div><div class="deck-ring"></div></div>
+      </div>
+      <div class="selection-stage hidden" id="selection-stage">
+        <div class="selection-intro"><p class="stage-eyebrow">THE DECK IS YOURS</p><h3>Choose five cards<br>without overthinking.</h3><p>Each card holds one position in your spread. Select exactly five.</p><span class="selection-count" id="selection-count">0 / 5 selected</span></div>
+        <div class="card-grid" id="card-grid" role="group" aria-label="Choose five face-down cards"></div>
+        <button class="primary-button disabled" id="reveal-button" type="button" disabled>Reveal the spread <span>↗</span></button>
+      </div>
+      <div class="reveal-stage hidden" id="reveal-stage">
+        <div class="reveal-heading"><p class="stage-eyebrow">YOUR FIVE-CARD SPREAD</p><h3 id="reveal-title">The shape of things<br>becoming clear.</h3><p id="reveal-note">Read slowly. Notice what catches you first.</p></div>
+        <div class="revealed-grid" id="revealed-grid"></div>
+        <button class="secondary-button" id="new-reading-button" type="button">Begin another reading</button>
+      </div>
+    </section>
+
+    <section class="quote-band wrap"><p>“The cards did not tell me what to do.<br>They helped me hear what I already knew.”</p><span>— A. / London</span></section>
+
+    <section class="pricing wrap" id="pricing"><div><p class="section-number">03 / KEEP GOING</p><h2>More questions<br>deserve more room.</h2></div><div class="price-options"><button class="price-option" type="button" data-package="reading"><span><b>Single reading</b><small>After your two free readings</small></span><strong>$1</strong><i>↗</i></button><button class="price-option featured" type="button" data-package="credits"><span><b>The full moon</b><small>500 credits · for the curious</small></span><strong>$50</strong><i>↗</i></button></div></section>
+  </main>
+  <footer class="site-footer wrap"><span>© 2025 ARCANA</span><span>Made for the in-between</span><a href="#top">Back to top ↑</a></footer>
+
+  <div class="modal-backdrop hidden" id="modal-backdrop" role="presentation"><section class="modal" id="profile-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="modal-close" type="button" aria-label="Close">×</button><p class="section-number">YOUR PROFILE</p><h2 id="modal-title">Keep your<br>readings close.</h2><p class="modal-copy">Save your name for a more personal ritual. Email is optional and never shared.</p><form id="profile-form"><label for="profile-name">Name</label><input id="profile-name" name="name" autocomplete="name" required placeholder="What should we call you?"><label for="profile-email">Email <span>(optional)</span></label><input id="profile-email" name="email" type="email" autocomplete="email" placeholder="you@example.com"><button class="primary-button" type="submit">Save profile <span>↗</span></button></form></section><section class="modal token-modal hidden" id="token-modal" role="dialog" aria-modal="true" aria-labelledby="token-title"><button class="modal-close" type="button" aria-label="Close">×</button><p class="section-number">TOKEN SHOP</p><h2 id="token-title">Choose your<br>next question.</h2><p class="modal-copy">A demo checkout for this prototype. No payment will be taken.</p><div class="modal-packages"><button class="modal-package" type="button"><span>One reading</span><b>$1</b></button><button class="modal-package selected" type="button"><span>500 credits</span><b>$50</b></button></div><button class="primary-button" type="button" id="demo-checkout">Continue to demo checkout <span>↗</span></button></section></div>
+  <script src="app.js"></script>
+</body>
+</html>

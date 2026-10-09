@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-deco: "Cinzel Decorative", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-gold: #e8c26a;
+  --color-gold-soft: #f5dfa3;
+  --color-violet: #9b6bff;
+  --color-magenta: #e04fb4;
+  --color-azure: #5aa9ff;
+  --color-ink: #07040f;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: radial-gradient(1200px 800px at 70% -10%, #2a1150 0%, transparent 60%),
+    radial-gradient(900px 700px at -10% 30%, #1a0c3a 0%, transparent 60%),
+    radial-gradient(900px 600px at 100% 100%, #2b0a33 0%, transparent 60%), #07040f;
+  color: #ece6ff;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
+  animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important;
+}
+
+.glass {
+  background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 1px solid rgba(232,194,106,0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.text-gradient-gold {
+  background: linear-gradient(100deg, #fff4d2 0%, #e8c26a 40%, #c98bff 75%, #e04fb4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.btn-glow {
+  position: relative; isolation: isolate;
+  background: linear-gradient(110deg, #e8c26a, #d07bff 50%, #e04fb4);
+  background-size: 200% 100%;
+  color: #12071f; font-weight: 600;
+  box-shadow: 0 0 30px -4px rgba(208,123,255,0.6), 0 0 60px -20px rgba(232,194,106,0.8);
+  transition: background-position .6s ease, transform .2s ease, box-shadow .3s;
+}
+.btn-glow:hover { background-position: 100% 0; box-shadow: 0 0 45px -2px rgba(224,79,180,0.7), 0 0 80px -20px rgba(232,194,106,0.9); }
+.btn-glow:disabled { filter: grayscale(0.8) brightness(0.6); cursor: not-allowed; box-shadow: none; }
+.btn-ghost { border: 1px solid rgba(232,194,106,0.4); color: #f5dfa3; transition: all .3s; }
+.btn-ghost:hover { background: rgba(232,194,106,0.1); border-color: #e8c26a; }
+
+.card-back {
+  background:
+    radial-gradient(circle at 50% 46%, rgba(155,107,255,0.35) 0 10%, transparent 11%),
+    repeating-conic-gradient(from 0deg at 50% 50%, rgba(232,194,106,0.22) 0 2deg, transparent 2deg 12deg),
+    radial-gradient(circle at 50% 50%, #241040 0%, #150826 60%, #0b0518 100%);
+  border: 1.5px solid rgba(232,194,106,0.7);
+  box-shadow: inset 0 0 0 5px #150826, inset 0 0 0 6px rgba(232,194,106,0.45), 0 10px 30px -8px rgba(0,0,0,0.8);
+}
+@keyframes card-shimmer { 0% { transform: translateX(-120%) skewX(-12deg); opacity: 0; } 25% { opacity: 1; } 55%,100% { transform: translateX(220%) skewX(-12deg); opacity: 0; } }
+.animate-card-shimmer {
+  background: linear-gradient(100deg, transparent 30%, rgba(255,244,210,0.35) 50%, transparent 70%);
+  animation: card-shimmer 4.5s ease-in-out infinite;
+}
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.perspective { perspective: 1200px; }
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes spin-rev { to { transform: rotate(-360deg); } }
+@keyframes float-y { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
+@keyframes marquee-r { from { transform: translateX(-50%) } to { transform: translateX(0) } }
+@keyframes marquee-l { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+@keyframes pulse-glow { 0%,100% { opacity: .55; transform: scale(1) } 50% { opacity: 1; transform: scale(1.06) } }
+.animate-spin-slow { animation: spin-slow 40s linear infinite; }
+.animate-spin-rev { animation: spin-rev 60s linear infinite; }
+.animate-float { animation: float-y 6s ease-in-out infinite; }
+.animate-marquee-r { animation: marquee-r 18s linear infinite; }
+.animate-marquee-l { animation: marquee-l 18s linear infinite; }
+.animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
