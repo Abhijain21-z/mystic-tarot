@@ -6,6 +6,7 @@ import { RotateCcw, Loader2, Sparkles, UserPlus } from "lucide-react";
 import { CardBack, TarotImage, CARD_BACK_SRC } from "../TarotCardFace";
 import CardWheel from "./CardWheel";
 import ReadingResult from "./ReadingResult";
+import PaymentModal from "../PaymentModal";
 import { useApp } from "../Providers";
 import { readingFromPicks } from "@/lib/reading-local";
 import type { ReadingCard } from "@/lib/interpret";
@@ -108,6 +109,7 @@ export default function ReadingFlow() {
   const [flipMode, setFlipMode] = useState(false);
   const [wheelRevealed, setWheelRevealed] = useState(0);
   const [faces, setFaces] = useState<Record<number, { image: string; name: string }>>({});
+  const [showSignup, setShowSignup] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
 
   const remaining = user ? user.freeRemaining + user.credits : guestFreeRemaining;
@@ -251,7 +253,12 @@ export default function ReadingFlow() {
             </div>
             <AnimatePresence>
               {revealed >= 5 && (
-                <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} onClick={() => { emitSound("reveal"); setStage("result"); }} className="btn-glow mt-12 rounded-full px-10 py-4">
+                <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} onClick={() => {
+                  emitSound("reveal");
+                  // Free card reveal for everyone — full prediction needs a free profile.
+                  if (!user) { setShowSignup(true); return; }
+                  setStage("result");
+                }} className="btn-glow mt-12 rounded-full px-10 py-4">
                   Read My Full Prediction
                 </motion.button>
               )}
@@ -287,6 +294,7 @@ export default function ReadingFlow() {
           </div>
         </div>
       )}
+      <PaymentModal open={showSignup} mode="login" onClose={() => setShowSignup(false)} />
     </div>
   );
 }

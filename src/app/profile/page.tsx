@@ -32,7 +32,7 @@ export default function Page() {
         <div className="glass rounded-3xl p-6">
           <h2 className="font-display text-2xl">Add credits</h2>
           <p className="mb-4 text-sm text-white/60">1 reading = 1 credit · USD</p>
-          <div className="grid gap-3 sm:grid-cols-2"><BuyButton pack="single" className="btn-ghost">1 Credit — $1</BuyButton><BuyButton pack="pack500" className="btn-glow">500 Credits — $50</BuyButton></div>
+          <div className="grid gap-3 sm:grid-cols-2"><BuyButton pack="single" className="btn-ghost">1 Credit — $1</BuyButton><BuyButton pack="pack500" className="btn-glow">100 Credits — $50</BuyButton></div>
         </div>
         <div className="glass flex flex-col gap-3 rounded-3xl p-6">
           <Link href="/reading" className="btn-glow rounded-full py-3 text-center">Start a Reading</Link>

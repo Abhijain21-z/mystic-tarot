@@ -4,7 +4,7 @@ import { and, eq, sql } from "drizzle-orm";
 
 export const PACKS = {
   single: { label: "1 Reading Credit", credits: 1, amountCents: 100 },
-  pack500: { label: "500 Reading Credits", credits: 500, amountCents: 5000 },
+  pack500: { label: "100 Reading Credits", credits: 100, amountCents: 5000 },
 } as const;
 export type PackKey = keyof typeof PACKS;
 

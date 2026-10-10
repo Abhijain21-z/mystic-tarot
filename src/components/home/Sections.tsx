@@ -111,12 +111,12 @@ export function Pricing() {
         </div></Reveal>
         <Reveal delay={0.2}><div className="relative flex h-full flex-col rounded-3xl bg-gradient-to-b from-gold/60 via-violet/50 to-magenta/50 p-px">
           <div className="flex h-full flex-col rounded-3xl bg-[#140a26]/95 p-8">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-xs font-semibold text-ink">Best Value · $0.10/reading</span>
+            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-xs font-semibold text-ink">Best Value · $0.50/reading</span>
             <p className="text-sm uppercase tracking-widest text-gold">Seer&apos;s Package</p>
             <p className="mt-4 font-display text-6xl">$50 <span className="text-lg text-white/50">USD</span></p>
-            <p className="text-white/60">500 credits = 500 readings</p>
-            <ul className="my-6 space-y-2 text-sm text-white/75">{["Credits never expire", "90% savings vs single", "Priority new features"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
-            <div className="mt-auto"><BuyButton pack="pack500" className="btn-glow">Buy 500 Credits</BuyButton></div>
+            <p className="text-white/60">100 credits = 100 readings</p>
+            <ul className="my-6 space-y-2 text-sm text-white/75">{["Credits never expire", "50% savings vs single", "Priority new features"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
+            <div className="mt-auto"><BuyButton pack="pack500" className="btn-glow">Buy 100 Credits</BuyButton></div>
           </div>
         </div></Reveal>
       </div>
