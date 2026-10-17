@@ -29,7 +29,7 @@ export default function Page() {
         <p className="mx-auto mt-2 max-w-xl text-center text-sm text-white/55">Local pages for the cities we're asked about most — Indian metros first, then global capitals of tarot demand.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {["mumbai","delhi","bengaluru","hyderabad","chennai","pune","kolkata","bhopal","ahmedabad","jaipur","lucknow","surat","indore","nagpur","chandigarh","kochi","goa","varanasi","patna","bhubaneswar","dehradun","guwahati","coimbatore","vijayawada","mysuru","vadodara","raipur","jabalpur","jodhpur","vizag","london","new-york","toronto","sydney","dubai","singapore"].map((slug) => (
-            <Link key={slug} href={`/tarot-in-${slug}`} className="glass rounded-full px-4 py-1.5 text-sm text-white/70 transition hover:border-gold/50 hover:text-gold">
+            <Link key={slug} href={`/tarot-in/${slug}`} className="glass rounded-full px-4 py-1.5 text-sm text-white/70 transition hover:border-gold/50 hover:text-gold">
               {slug === "new-york" ? "New York" : slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
             </Link>
           ))}

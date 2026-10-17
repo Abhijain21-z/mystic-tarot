@@ -26,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const cards: Row[] = TAROT_DECK.map((c) => ({ url: `${BASE}/card/${c.id}`, lastModified: now, changeFrequency: "monthly", priority: 0.8 }));
   const zodiac: Row[] = ZODIAC.map((z) => ({ url: `${BASE}/zodiac/${z.sign.toLowerCase()}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 }));
-  const cities: Row[] = CITIES.map((c) => ({ url: `${BASE}/tarot-in-${c.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 }));
+  const cities: Row[] = CITIES.map((c) => ({ url: `${BASE}/tarot-in/${c.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 }));
   const posts: Row[] = BLOG.map((b) => ({ url: `${BASE}/blog/${b.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.8 }));
 
   return [...statics, ...cards, ...zodiac, ...cities, ...posts];
