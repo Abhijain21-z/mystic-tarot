@@ -94,6 +94,10 @@ function CardModal({ card, isOpen, onClose }: { card: TarotCard; isOpen: boolean
           <p className="font-display text-lg text-gold-soft mb-2">💫 Advice</p>
           <p className="text-white/80">{card.advice}</p>
         </div>
+
+        <Link href={`/card/${card.id}`} onClick={onClose} className="btn-glow mt-6 inline-flex rounded-full px-6 py-2.5 text-sm">
+          Open full {card.name.replace(/^The /, "")} page →
+        </Link>
       </motion.div>
     </motion.div>
   );
@@ -113,22 +117,20 @@ function MeaningCard({ title, icon, color, content }: { title: string; icon: str
 
 function CardTile({ card, onClick }: { card: TarotCard; onClick: () => void }) {
   return (
-    <motion.button
+    <motion.div
       whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
-      onClick={onClick}
       className="group relative flex flex-col items-center p-3 rounded-2xl bg-black/40 border border-white/10 hover:border-gold/50 hover:shadow-[0_0_30px_rgba(232,194,106,0.2)] transition-all duration-300"
-      aria-label={`View ${card.name} meaning`}
     >
-      <div className="relative w-24 h-36 mb-3 overflow-hidden rounded-lg border-2 border-gold/40 shadow-[0_0_20px_rgba(232,194,106,0.3)]">
+      <Link href={`/card/${card.id}`} aria-label={`Open ${card.name} full meaning page`} className="relative w-24 h-36 mb-3 overflow-hidden rounded-lg border-2 border-gold/40 shadow-[0_0_20px_rgba(232,194,106,0.3)]">
         <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      </div>
+      </Link>
       <div className="text-center w-full">
-        <p className="font-display text-sm font-semibold text-gold-soft leading-tight">{card.name}</p>
+        <button onClick={onClick} className="font-display text-sm font-semibold text-gold-soft leading-tight hover:text-gold">{card.name}</button>
         <p className="text-[11px] text-white/50 capitalize">{card.suit.toLowerCase()}</p>
       </div>
-    </motion.button>
+    </motion.div>
   );
 }
 

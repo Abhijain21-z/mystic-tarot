@@ -11,11 +11,17 @@ const LINKS = [
   { href: "/", label: "Home" },
   { href: "/reading", label: "Tarot Reading" },
   { href: "/meanings", label: "Card Meanings" },
-  { href: "/#how", label: "How It Works" },
+  { href: "/yes-or-no", label: "Yes / No" },
+  { href: "/quiz", label: "My Card Quiz" },
   { href: "/#pricing", label: "Pricing" },
-  { href: "/about", label: "About" },
-  { href: "/history", label: "Reading History" },
-  { href: "/contact", label: "Contact" },
+  { href: "/blog", label: "Blog" },
+  { href: "/faq", label: "FAQ" },
+];
+
+const EXPLORE = [
+  { href: "/zodiac", label: "Tarot by Zodiac Sign" },
+  { href: "/tarot-reading-near-me", label: "Tarot Near Me (Cities)" },
+  { href: "/blog", label: "Tarot Journal (Guides)" },
 ];
 
 export function Logo() {
@@ -67,7 +73,7 @@ export default function Nav() {
             <motion.nav aria-label="Mobile" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", damping: 26 }} onClick={(e) => e.stopPropagation()} className="absolute right-0 top-0 h-full w-72 glass p-6">
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="mb-6 ml-auto block"><X /></button>
               <div className="mb-4"><LanguageSwitcher compact /></div>
-              {[...LINKS, { href: user ? "/profile" : "/login", label: user ? "Profile" : "Login" }, { href: "/terms", label: "Terms" }, { href: "/privacy", label: "Privacy Policy" }].map((l) => (
+              {[...LINKS, { href: "/about", label: "About" }, { href: "/history", label: "Reading History" }, { href: "/tarot-reading-near-me", label: "Tarot Near Me" }, { href: "/zodiac", label: "Zodiac Cards" }, { href: user ? "/profile" : "/login", label: user ? "Profile" : "Login" }, { href: "/terms", label: "Terms" }, { href: "/privacy", label: "Privacy Policy" }].map((l) => (
                 <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="block border-b border-white/5 py-3 font-display text-xl text-white/85 hover:text-gold">{l.label}</Link>
               ))}
             </motion.nav>
