@@ -18,11 +18,12 @@ function emitSound(name: "spin" | "burst" | "select" | "flip" | "reveal") {
   if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("tarot:sound", { detail: name }));
 }
 
-function Orbit({ spinning }: { spinning: boolean }) {
+function Orbit({ spinning, onClick }: { spinning: boolean; onClick: () => void }) {
   const rot = useMotionValue(0);
   const tilt = useMotionValue(-18);
   const speed = useRef(12);
   const dragging = useRef(false);
+  const moved = useRef(false);
   const lastX = useRef(0);
   useAnimationFrame((_, dt) => {
     const target = spinning ? 720 : 14;
@@ -34,11 +35,12 @@ function Orbit({ spinning }: { spinning: boolean }) {
   return (
     <div className="perspective relative mx-auto aspect-square w-[min(88vw,440px)] cursor-grab touch-pan-y active:cursor-grabbing"
       style={{ touchAction: "pan-y" }}
-      role="application" aria-label="Mystic deck globe. Drag or swipe to spin it."
-      onPointerDown={(e) => { dragging.current = true; lastX.current = e.clientX; (e.target as HTMLElement).setPointerCapture?.(e.pointerId); }}
-      onPointerMove={(e) => { if (!dragging.current) return; const dx = e.clientX - lastX.current; lastX.current = e.clientX; rot.set(rot.get() + dx * 0.6); }}
-      onPointerUp={() => { dragging.current = false; }} onPointerCancel={() => { dragging.current = false; }} onPointerLeave={() => { dragging.current = false; }}>
-      <p className="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[11px] tracking-wide text-white/45">Swipe to spin ✦</p>
+      role="application" aria-label="Mystic deck globe. Tap, drag or swipe to spin it."
+      onPointerDown={(e) => { dragging.current = true; moved.current = false; lastX.current = e.clientX; (e.target as HTMLElement).setPointerCapture?.(e.pointerId); }}
+      onPointerMove={(e) => { if (!dragging.current) return; const dx = e.clientX - lastX.current; if (Math.abs(dx) > 6) moved.current = true; lastX.current = e.clientX; rot.set(rot.get() + dx * 0.6); }}
+      onPointerUp={() => { dragging.current = false; }} onPointerCancel={() => { dragging.current = false; }} onPointerLeave={() => { dragging.current = false; }}
+      onClick={() => { if (!spinning && !moved.current) onClick(); }}>
+      <p className="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[11px] tracking-wide text-white/45">Tap or swipe to spin ✦</p>
       {/* dark mystic globe */}
       <div className="absolute inset-[10%] rounded-full border border-violet/40 bg-[radial-gradient(circle_at_50%_35%,#2c1454_0%,#150a2e_45%,#07040f_75%)] shadow-[0_0_100px_-10px_rgba(155,107,255,0.8),inset_0_0_80px_-10px_rgba(232,194,106,0.35)]" />
       <div className="absolute inset-[10%] overflow-hidden rounded-full" aria-hidden>
@@ -130,18 +132,21 @@ export default function ReadingFlow() {
     if (picked.includes(i)) { setPicked((p) => p.filter((x) => x !== i)); return; }
     if (picked.length >= 5) return;
     emitSound("select");
-    setPicked((p) => [...p, i]);
+    const next = [...picked, i];
+    setPicked(next);
+    // All 5 chosen — start the reveal automatically, no button press needed.
+    if (next.length === 5) reveal(next);
   }
 
-  function reveal() {
-    if (picked.length !== 5 || loading) return;
+  function reveal(picks: number[] = picked) {
+    if (picks.length !== 5 || loading) return;
     setLoading(true);
     // No server needed: build the reading instantly from the user's 5 picks.
     window.setTimeout(() => {
       try {
-        const drawn = readingFromPicks(picked);
+        const drawn = readingFromPicks(picks);
         const f: Record<number, { image: string; name: string }> = {};
-        picked.forEach((pi, k) => { f[pi] = { image: drawn[k].image, name: drawn[k].name }; });
+        picks.forEach((pi, k) => { f[pi] = { image: drawn[k].image, name: drawn[k].name }; });
         setFaces(f);
         setCards(drawn); setSaved(false);
         setWheelRevealed(0); setFlipMode(true);
@@ -167,6 +172,13 @@ export default function ReadingFlow() {
     return () => clearTimeout(t);
   }, [stage, revealed]);
 
+  /* Logged-in users get the full prediction automatically after all 5 cards flip. */
+  useEffect(() => {
+    if (stage !== "reveal" || revealed < 5 || !user) return;
+    const t = setTimeout(() => { emitSound("reveal"); setStage("result"); }, 900);
+    return () => clearTimeout(t);
+  }, [stage, revealed, user]);
+
   function restart() { setPicked([]); setCards([]); setRevealed(0); setFlipMode(false); setWheelRevealed(0); setFaces({}); setStage("spin"); }
 
   return (
@@ -186,7 +198,7 @@ export default function ReadingFlow() {
         {stage === "spin" && (
           <motion.section key="spin" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 1.1 }} className="flex flex-col items-center gap-6">
             <h2 className="text-center font-display text-4xl">Spin the Mystical Deck</h2>
-            <Orbit spinning={spinning} />
+            <Orbit spinning={spinning} onClick={spin} />
             <button onClick={spin} disabled={spinning} className="btn-glow inline-flex items-center gap-2 rounded-full px-10 py-4">
               {spinning ? <><Loader2 className="h-4 w-4 animate-spin" />Shuffling the cosmos…</> : <><Sparkles className="h-4 w-4" />Spin the Tarot Deck</>}
             </button>
@@ -227,7 +239,7 @@ export default function ReadingFlow() {
               <AnimatePresence mode="wait">
                 {picked.length === 5 ? (
                   <motion.button key="reveal" initial={{ opacity: 0, scale: 0.85, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }}
-                    onClick={reveal} disabled={loading}
+                    onClick={() => reveal()} disabled={loading}
                     className="btn-glow inline-flex items-center gap-3 rounded-full border-2 border-gold/80 px-12 py-4 font-display text-2xl shadow-[0_0_45px_rgba(232,194,106,0.6)]">
                     {loading ? <><Loader2 className="h-5 w-5 animate-spin" />Consulting the cosmos…</> : <><Sparkles className="h-5 w-5 text-gold" />Reveal My 5 Cards</>}
                   </motion.button>
