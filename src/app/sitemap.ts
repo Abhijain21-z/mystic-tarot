@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next";
 import { TAROT_DECK } from "@/data/tarot";
 import { ZODIAC, CITIES, BLOG } from "@/data/seo";
 import { QA_ALL } from "@/data/qa";
+import { SITE } from "@/data/seo-data";
 
-const BASE = "https://tarot-reader-pied.vercel.app";
+const BASE = SITE.url; // one place to change when the custom domain goes live
 
 type Row = MetadataRoute.Sitemap[number];
 

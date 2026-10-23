@@ -99,6 +99,10 @@ export default async function QAPage({ params }: { params: Promise<{ slug: strin
         <Link href={`/tarot-qa/${prev.slug}`} className="glass rounded-full px-4 py-2 text-white/70 hover:text-gold">← {prev.q}</Link>
         <Link href={`/tarot-qa/${next.slug}`} className="glass rounded-full px-4 py-2 text-white/70 hover:text-gold">{next.q} →</Link>
       </nav>
+
+      <footer className="mt-8 border-t border-gold/15 pt-4 text-center text-xs text-white/40">
+        Answered live at MysticTarot — <a href={`${SITE.url}`} className="hover:text-gold/70 break-all">{SITE.url}</a>
+      </footer>
     </article>
   );
 }

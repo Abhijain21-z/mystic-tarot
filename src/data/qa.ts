@@ -2,7 +2,13 @@
  * Every tarot question users actually search, answered.
  * Each entry becomes its own SEO page at /tarot-qa/[slug] and feeds the FAQ hub.
  * Voice: US English, honest, grounded, faith-respectful, no doom promises.
+ * Sources merged into QA_ALL: QA_HOME (handwritten batch 1), QA_EXTRA (handwritten
+ * batch 2 — how-to/compare/best/money/everyday/romance/pop/hindi), QA_GENERATED
+ * (cards, numbers, roman numerals, zodiac — built from deck data in qa-cards.ts).
  */
+import { QA_GENERATED } from "./qa-cards";
+import { QA_EXTRA } from "./qa-extra";
+
 export interface QAEntry { q: string; a: string; cat: string }
 
 export const QA_HOME: QAEntry[] = [
@@ -235,16 +241,28 @@ export const CAT_LABELS: Record<string, string> = {
   when: "When Were Tarot Cards Invented & When To Read",
   where: "Where Tarot Cards Come From, Where To Buy & Where To Find Them",
   why: "Why Tarot Accurate, Fake, Dangerous or Good",
+  "card-meanings": "Every Tarot Card Meaning (All 78)",
+  numbers: "Tarot Card Numbers & Roman Numerals",
+  "zodiac-for": "Tarot Card for Every Zodiac Sign",
+  "how-to": "How to Read Tarot Cards",
+  compare: "Tarot vs Astrology, Oracle, Palm & More",
+  "best-of": "Best Tarot Cards, Apps & Books",
+  money: "Tarot Prices, Costs & Scam Safety",
+  everyday: "Daily Tarot, Apps & Practical Use",
+  romance: "Tarot Readings for Love & Relationships",
+  pop: "Tarot in Games, Anime & Pop Culture",
+  hindi: "Tarot in Hindi & Hinglish",
 };
 
-export const CAT_ORDER = ["reality", "is", "can-i", "can", "how-do", "how", "identity", "should", "when", "where", "why"];
+export const CAT_ORDER = ["reality", "is", "can-i", "can", "how-do", "how", "identity", "should", "when", "where", "why", "how-to", "card-meanings", "numbers", "zodiac-for", "compare", "best-of", "money", "everyday", "romance", "pop", "hindi"];
 
 /** Flattened + slug-deduped entry list in category order. */
 export const QA_ALL: (QAEntry & { slug: string })[] = (() => {
+  const all = [...QA_HOME, ...QA_EXTRA, ...QA_GENERATED];
   const out: (QAEntry & { slug: string })[] = [];
   const seen = new Set<string>();
   for (const cat of CAT_ORDER) {
-    for (const e of QA_HOME) {
+    for (const e of all) {
       if (e.cat !== cat) continue;
       const slug = qaSlug(e.q);
       if (seen.has(slug)) continue;
