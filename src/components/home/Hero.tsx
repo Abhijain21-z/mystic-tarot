@@ -58,12 +58,12 @@ export default function Hero() {
             <Sparkles className="h-3.5 w-3.5" /> 78-card deck · 3 free readings daily
           </motion.p>
           <h1 className="font-display text-5xl font-semibold leading-[1.02] sm:text-6xl xl:text-7xl">
-            {"Discover What the Cards Reveal".split(" ").map((w, i) => (
-              <motion.span key={i} initial={{ opacity: 0, y: 30, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ delay: 0.15 + i * 0.1, duration: 0.7 }} className={`mr-3 inline-block ${i >= 3 ? "text-gradient-gold italic" : ""}`}>{w}</motion.span>
+            {"Free Tarot Card Reading".split(" ").map((w, i) => (
+              <motion.span key={i} initial={{ opacity: 0, y: 30, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ delay: 0.15 + i * 0.1, duration: 0.7 }} className={`mr-3 inline-block ${i >= 2 ? "text-gradient-gold italic" : ""}`}>{w}</motion.span>
             ))}
           </h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="mx-auto mt-6 max-w-lg text-lg text-white/70 lg:mx-0">
-            Choose five cards. Explore your energy, choices and possibilities.
+            Predict your <b className="text-gold-soft">love, career, money, family, business &amp; emotions</b> with a dedicated 5-card spread — pick your life stream and get answers in minutes. 3 free readings every day.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
             <Link href="/reading" className="btn-glow rounded-full px-8 py-4 text-base" aria-label="Check your tarot cards">Check Your Tarot Cards</Link>

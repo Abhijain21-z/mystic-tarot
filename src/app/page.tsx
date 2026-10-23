@@ -7,8 +7,8 @@ import { JsonLd, faqSchema } from "@/components/seo/Seo";
 import { ZODIAC } from "@/data/seo";
 
 export const metadata: Metadata = {
-  title: { absolute: "MysticTarot — Free Tarot Card Reading | Discover What the Cards Reveal" },
-  description: "Best online tarot card reading: pick 5 cards from the full 78-card Rider–Waite deck and get love, career & money insights. 3 free readings every day.",
+  title: { absolute: "Free Tarot Card Reading for Love, Career & Money — MysticTarot" },
+  description: "Free tarot card reading to predict your love life, career, money, family, business and emotions. Dedicated 5-card spreads per life stream from the full 78-card Rider–Waite deck — 3 free readings every day.",
   alternates: { canonical: "/" },
 };
 
