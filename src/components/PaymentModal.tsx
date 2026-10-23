@@ -14,7 +14,7 @@ export default function PaymentModal({ open, mode, onClose }: { open: boolean; m
             {mode === "login" ? (
               <>
                 <h2 id="pm-title" className="font-display text-3xl">Unlock Your Full Prediction</h2>
-                <p className="mt-2 text-white/70">Your cards are revealed! Create a free profile to read your full personalized prediction, save it to your history, and get 2 free readings.</p>
+                <p className="mt-2 text-white/70">Your cards are revealed! Create a free profile to read your full personalized prediction, save it to your history, and get 3 free readings every day.</p>
                 <div className="mt-6 flex flex-col gap-3">
                   <Link href="/login?mode=register&next=/reading" className="btn-glow rounded-full px-6 py-3 text-center">Create Profile</Link>
                   <Link href="/login?next=/reading" className="btn-ghost rounded-full px-6 py-3 text-center">I already have an account</Link>

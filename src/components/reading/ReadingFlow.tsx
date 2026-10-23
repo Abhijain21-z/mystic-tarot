@@ -2,16 +2,57 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useAnimationFrame, useMotionValue } from "framer-motion";
-import { RotateCcw, Loader2, Sparkles, UserPlus } from "lucide-react";
+import { RotateCcw, Loader2, Sparkles, UserPlus, Flame, ArrowRight } from "lucide-react";
 import { CardBack, TarotImage, CARD_BACK_SRC } from "../TarotCardFace";
 import CardWheel from "./CardWheel";
 import ReadingResult from "./ReadingResult";
 import PaymentModal from "../PaymentModal";
+import { MysticReader } from "../MysticPersona";
 import { useApp } from "../Providers";
 import { readingFromPicks } from "@/lib/reading-local";
+import { DAILY_FREE_LIMIT, dailyInfo, recordDailyReading, type DailyInfo } from "@/lib/daily-quota";
 import type { ReadingCard } from "@/lib/interpret";
 
 type Stage = "spin" | "select" | "reveal" | "result";
+
+/* ─── today's free-quota / credits line shown above every stage except result ─── */
+function QuotaLine({ user, daily }: { user: { credits: number } | null; daily: DailyInfo | null }) {
+  const credits = user?.credits ?? 0;
+  const used = daily?.used ?? 0;
+  if (credits > 0) {
+    return <>Today: <b className="text-gold">{used}/{DAILY_FREE_LIMIT}</b> free readings used · Credits: <b className="text-gold">{credits}</b></>;
+  }
+  return <>Today&apos;s free readings: <b className="text-gold">{Math.max(0, DAILY_FREE_LIMIT - used)}/{DAILY_FREE_LIMIT}</b> left — credits unlock more.</>;
+}
+
+/* ─── "Only the himmatwar go Pro" — challenge upsell shown when the daily free quota is over ─── */
+function ChallengePanel({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={`glass relative overflow-hidden text-center ${compact ? "rounded-3xl p-6" : "max-w-xl rounded-[2rem] p-8 sm:p-10"}`}>
+      <span aria-hidden className="pointer-events-none absolute -top-20 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-magenta/30 blur-3xl" />
+      <p aria-hidden className="text-4xl">🔥</p>
+      <h2 className="mt-2 font-display text-3xl sm:text-4xl">
+        Only the <span className="text-gradient-gold italic">himmatwar</span> go Pro.
+      </h2>
+      <p className="mx-auto mt-3 max-w-md text-white/75">
+        You&apos;ve used today&apos;s {DAILY_FREE_LIMIT} free readings. <b className="text-gold">A himmatwar mind doesn&apos;t wait for tomorrow</b> — it takes the answer now.
+        <br />
+        <span className="text-gold-soft">Are you himmatwar, or shall the cards wait?</span>
+      </p>
+      <ul className="mx-auto mt-5 max-w-sm space-y-2 text-left text-sm text-white/70">
+        <li className="flex items-center gap-2"><span aria-hidden>✦</span>Unlimited readings — no daily cap</li>
+        <li className="flex items-center gap-2"><span aria-hidden>✦</span>Every position, every card, every detail unlocked</li>
+        <li className="flex items-center gap-2"><span aria-hidden>✦</span>From 50¢ per reading ($50 = 100 credits)</li>
+      </ul>
+      <div className="mt-6 flex flex-col items-center gap-3">
+        <Link href="/pricing" className="btn-glow inline-flex items-center gap-2 rounded-full px-8 py-4">
+          <Flame className="h-5 w-5" /> I&apos;m Himmatwar — Unlock Pro <ArrowRight className="h-4 w-4" />
+        </Link>
+        <p className="text-xs text-white/45">Not today? Fair — {DAILY_FREE_LIMIT} free readings reset tomorrow. 😌</p>
+      </div>
+    </div>
+  );
+}
 
 /** Sound-ready hook: dispatches events that an audio layer can subscribe to. */
 function emitSound(name: "spin" | "burst" | "select" | "flip" | "reveal") {
@@ -99,7 +140,7 @@ function FlipCard({ card, index, show }: { card: ReadingCard; index: number; sho
 }
 
 export default function ReadingFlow() {
-  const { user, guestFreeRemaining, refresh, loaded } = useApp();
+  const { user, refresh, loaded } = useApp();
   const [stage, setStage] = useState<Stage>("spin");
   const [spinning, setSpinning] = useState(false);
   const [deckKey, setDeckKey] = useState(0);
@@ -112,9 +153,16 @@ export default function ReadingFlow() {
   const [wheelRevealed, setWheelRevealed] = useState(0);
   const [faces, setFaces] = useState<Record<number, { image: string; name: string }>>({});
   const [showSignup, setShowSignup] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [daily, setDaily] = useState<DailyInfo | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
-  const remaining = user ? user.freeRemaining + user.credits : guestFreeRemaining;
+  /* Daily free quota lives client-side (3/day); paid credits always bypass it. */
+  useEffect(() => { setDaily(dailyInfo()); }, []);
+  const creditsUnlimited = !!user && user.credits > 0;
+  const quotaLeft = daily ? daily.remaining > 0 : true; // optimistically allow render; gate shown once quota loads
+  const canRead = creditsUnlimited || quotaLeft;
+  const dailyUsed = daily?.used ?? 0;
 
   useEffect(() => { topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [stage]);
 
@@ -150,6 +198,8 @@ export default function ReadingFlow() {
         setFaces(f);
         setCards(drawn); setSaved(false);
         setWheelRevealed(0); setFlipMode(true);
+        // Consume one slot of today's free quota (credits bypass this).
+        if (!creditsUnlimited) setDaily(recordDailyReading());
         refresh();
       } finally { setLoading(false); }
     }, 700);
@@ -190,7 +240,7 @@ export default function ReadingFlow() {
       </div>
       {loaded && stage !== "result" && (
         <p className="mb-4 text-center text-sm text-white/60" aria-live="polite">
-          {user ? <>Free readings left: <b className="text-gold">{user.freeRemaining}</b> · Credits: <b className="text-gold">{user.credits}</b></> : <>Guest free readings left: <b className="text-gold">{guestFreeRemaining}</b></>}
+          <QuotaLine user={user} daily={daily} />
         </p>
       )}
 
@@ -198,11 +248,27 @@ export default function ReadingFlow() {
         {stage === "spin" && (
           <motion.section key="spin" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 1.1 }} className="flex flex-col items-center gap-6">
             <h2 className="text-center font-display text-4xl">Spin the Mystical Deck</h2>
-            <Orbit spinning={spinning} onClick={spin} />
-            <button onClick={spin} disabled={spinning} className="btn-glow inline-flex items-center gap-2 rounded-full px-10 py-4">
-              {spinning ? <><Loader2 className="h-4 w-4 animate-spin" />Shuffling the cosmos…</> : <><Sparkles className="h-4 w-4" />Spin the Tarot Deck</>}
-            </button>
-            <p className="text-sm text-white/55">Choose exactly 5 cards from the deck after the spin.</p>
+            {canRead ? (
+              <>
+                <Orbit spinning={spinning} onClick={spin} />
+                <button onClick={spin} disabled={spinning} className="btn-glow inline-flex items-center gap-2 rounded-full px-10 py-4">
+                  {spinning ? <><Loader2 className="h-4 w-4 animate-spin" />Shuffling the cosmos…</> : <><Sparkles className="h-4 w-4" />Spin the Tarot Deck</>}
+                </button>
+                <label className="w-full max-w-xl text-center">
+                  <span className="mb-1.5 block text-xs uppercase tracking-widest text-gold/70">Your question (optional)</span>
+                  <input
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    maxLength={140}
+                    placeholder="Love, career, money — destiny answers what you dare to ask…"
+                    className="glass w-full rounded-full px-5 py-3.5 text-center text-sm text-white placeholder:text-white/35 outline-none focus:ring-1 focus:ring-gold/60"
+                  />
+                </label>
+                <p className="text-sm text-white/55">Choose exactly 5 cards from the deck after the spin.</p>
+              </>
+            ) : (
+              <ChallengePanel />
+            )}
           </motion.section>
         )}
 
@@ -252,7 +318,11 @@ export default function ReadingFlow() {
               {picked.length > 0 && !flipMode && (
                 <button onClick={() => setPicked([])} disabled={loading} className="btn-ghost inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm"><RotateCcw className="h-4 w-4" />Choose Again</button>
               )}
-              {remaining <= 0 && loaded && <p className="text-center text-xs text-white/50">No free readings left — you&apos;ll be asked to add credits.</p>}
+              {daily && !canRead && (
+                <p className="text-center text-sm text-gold-soft">
+                  <Flame className="mr-1 inline h-4 w-4" />Daily limit done — <Link href="/pricing" className="underline decoration-gold/60 underline-offset-2 hover:text-gold">only the himmatwar go Pro</Link>.
+                </p>
+              )}
             </div>
           </motion.section>
         )}
@@ -282,6 +352,14 @@ export default function ReadingFlow() {
           <motion.section key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h2 className="text-center font-display text-4xl sm:text-5xl">Your <span className="text-gradient-gold italic">Personalized</span> Reading</h2>
             <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-white/60">These insights are for reflection — possibilities, not certainties. Tap any card to expand.</p>
+            {question.trim() && (
+              <div className="glass mx-auto mt-6 max-w-2xl rounded-2xl border border-gold/30 p-4 text-center">
+                <p className="text-xs uppercase tracking-widest text-gold/70">Your question</p>
+                <p className="mt-1 font-display text-lg leading-snug text-gold-soft">&ldquo;{question.trim()}&rdquo;</p>
+                <p className="mt-1 text-xs text-white/55">Read every position with this in mind — the cards answer what you dare to ask.</p>
+              </div>
+            )}
+            <MysticReader atTop />
             {!saved && (
               <div className="glass mx-auto mt-6 flex max-w-2xl flex-col items-center gap-3 rounded-2xl p-4 text-center sm:flex-row sm:text-left">
                 <UserPlus className="h-6 w-6 shrink-0 text-gold" />
@@ -290,6 +368,11 @@ export default function ReadingFlow() {
               </div>
             )}
             <div className="mt-8"><ReadingResult cards={cards} /></div>
+            {dailyUsed >= DAILY_FREE_LIMIT && !creditsUnlimited && (
+              <div className="mt-8">
+                <ChallengePanel compact />
+              </div>
+            )}
             <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <button onClick={restart} className="btn-glow rounded-full px-8 py-3">New Reading</button>
               {user && <Link href="/history" className="btn-ghost rounded-full px-8 py-3">View History</Link>}

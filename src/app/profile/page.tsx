@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2, LogOut, Trash2, Sparkles, Coins, Gift } from "lucide-react";
 import { useApp } from "@/components/Providers";
+import { dailyInfo, type DailyInfo } from "@/lib/daily-quota";
 import BuyButton from "@/components/BuyButton";
 
 export default function Page() {
@@ -11,8 +12,10 @@ export default function Page() {
   const router = useRouter();
   const [count, setCount] = useState<number | null>(null);
   const [confirm, setConfirm] = useState(false);
+  const [daily, setDaily] = useState<DailyInfo | null>(null);
   useEffect(() => { if (loaded && !user) router.replace("/login?next=/profile"); }, [loaded, user, router]);
   useEffect(() => { if (user) fetch("/api/readings").then((r) => r.json()).then((d) => setCount(d.readings?.length ?? 0)); }, [user]);
+  useEffect(() => { setDaily(dailyInfo()); }, []);
   if (!loaded || !user) return <div className="grid min-h-[60vh] place-items-center"><Loader2 className="h-8 w-8 animate-spin text-gold" /></div>;
 
   async function logout() { await fetch("/api/auth/logout", { method: "POST" }); await refresh(); router.push("/"); }
@@ -24,7 +27,7 @@ export default function Page() {
       <h1 className="mt-2 font-display text-5xl">Hello, {user.name}</h1>
       <p className="text-white/60">{user.email}</p>
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        {[{ I: Gift, l: "Free readings remaining", v: user.freeRemaining }, { I: Coins, l: "Credit balance", v: user.credits }, { I: Sparkles, l: "Saved readings", v: count ?? "…" }].map(({ I, l, v }) => (
+        {[{ I: Gift, l: `Free readings used today (${daily ? daily.limit : 3}/day)`, v: daily ? `${daily.used}` : "…" }, { I: Coins, l: "Credit balance", v: user.credits }, { I: Sparkles, l: "Saved readings", v: count ?? "…" }].map(({ I, l, v }) => (
           <div key={l} className="glass rounded-3xl p-6"><I className="h-6 w-6 text-gold" /><p className="mt-3 font-display text-5xl">{v}</p><p className="text-sm text-white/60">{l}</p></div>
         ))}
       </div>

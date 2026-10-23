@@ -34,7 +34,7 @@ function Inner() {
         ))}
       </div>
       <h1 className="font-display text-4xl">{mode === "login" ? "Welcome back" : "Begin your journey"}</h1>
-      <p className="mt-1 text-sm text-white/60">{mode === "login" ? "Access your credits and saved readings." : "Every new profile includes 2 free readings."}</p>
+      <p className="mt-1 text-sm text-white/60">{mode === "login" ? "Access your credits and saved readings." : "Every profile includes 3 free readings every day."}</p>
       <form onSubmit={submit} className="mt-6 space-y-4">
         {mode === "register" && <label className="block"><span className="mb-1 block text-sm text-white/70">Name</span><input required className={input} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} autoComplete="name" /></label>}
         <label className="block"><span className="mb-1 block text-sm text-white/70">Email address</span><input required type="email" className={input} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} autoComplete="email" /></label>

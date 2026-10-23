@@ -5,7 +5,7 @@ import { JsonLd, faqSchema } from "@/components/seo/Seo";
 
 export const metadata: Metadata = {
   title: { absolute: "Tarot Card Reading Near Me — Online: Free & Instant, All Cities" },
-  description: "Searching 'tarot card reading near me'? MysticTarot is online-only: pick 5 cards and read instantly from any city — 2 free readings, no appointment, private.",
+  description: "Searching 'tarot card reading near me'? MysticTarot is online-only: pick 5 cards and read instantly from any city — 3 free readings daily, no appointment, private.",
   keywords: ["tarot card reading near me", "tarot reading near me", "best tarot card reader near me", "tarot card reader online", "online tarot reading near me"],
   alternates: { canonical: "/tarot-reading-near-me" },
 };
@@ -16,10 +16,10 @@ export default function Page() {
       <JsonLd data={faqSchema([
         { q: "Can I get a tarot reading near me without appointments?", a: "Yes — MysticTarot is online: your reading runs on demand, 24/7, from any city listed here. Nothing to book, nothing to travel for." },
         { q: "Is online tarot reading as good as in person?", a: "For reflection-style readings, yes: the deck and interpretations are identical, there's no cold-reading pressure, and your history stays saved to your account." },
-        { q: "How much does a reading cost?", a: "Your first 2 readings are free. After that $1 per reading or $50 for 100 credits ($0.50 each) — paid securely via PayPal." },
+        { q: "How much does a reading cost?", a: "3 free readings every day. Beyond that $1 per reading or $50 for 100 credits ($0.50 each) — paid securely via PayPal." },
       ])} />
       <h1 className="text-center font-display text-5xl">Tarot Card Reading <span className="text-gradient-gold">Near Me</span></h1>
-      <p className="mx-auto mt-3 max-w-2xl text-center text-white/60">You just found the shortest distance between a question and an answer: an online 5-card reading that starts in the next minute — wherever in the world you are. First two readings free.</p>
+      <p className="mx-auto mt-3 max-w-2xl text-center text-white/60">You just found the shortest distance between a question and an answer: an online 5-card reading that starts in the next minute — wherever in the world you are. Three free readings, every day.</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link href="/reading" className="btn-glow rounded-full px-8 py-3">Start my free reading</Link>
         <Link href="/yes-or-no" className="btn-ghost rounded-full px-8 py-3">Quick yes/no pull</Link>

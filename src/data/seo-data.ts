@@ -17,7 +17,7 @@ export const FAQS: Faq[] = [
   { q: "What does upright and reversed mean?", a: "Upright is the card's flowing energy; reversed is the same energy blocked, delayed or turned inward. Reversed isn't bad — it often asks you to look at the inner block." },
   { q: "How should I store tarot cards?", a: "Keep the deck in its box or wrapped in a cloth you like. Storage is about respect and routine, not energy rules." },
   { q: "Should tarot cards be gifted?", a: "Nice tradition, no obligation. Beginners often start with a self-bought Rider–Waite deck and learn from a meanings guide." },
-  { q: "How much does a tarot reading cost?", a: "Anywhere from free apps to $100+ for live readers. MysticTarot is free for your first two readings, then $1 per reading or $50 for 100 credits." },
+  { q: "How much does a tarot reading cost?", a: "Anywhere from free apps to $100+ for live readers. MysticTarot is free for 3 readings every day, then $1 per reading or $50 for 100 credits." },
   { q: "Can I pull tarot cards for myself?", a: "Absolutely. Self-readings work well when you write the question down first and accept the answer before you see it." },
   { q: "What questions should I ask tarot cards?", a: "Open questions: 'What should I know about…', 'What is blocking…', 'Where is this heading?' Yes-or-no questions suit quick single-card pulls." },
   { q: "How long does a tarot reading take?", a: "A single card takes a minute; a 5-card spread with full interpretations takes 10–15 minutes to sit with properly." },

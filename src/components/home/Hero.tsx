@@ -55,7 +55,7 @@ export default function Hero() {
       <motion.div style={{ y, opacity: op }} className="mx-auto grid w-full max-w-7xl items-center gap-10 px-6 lg:grid-cols-2">
         <div className="text-center lg:text-left">
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-gold-soft">
-            <Sparkles className="h-3.5 w-3.5" /> 78-card deck · 2 free readings
+            <Sparkles className="h-3.5 w-3.5" /> 78-card deck · 3 free readings daily
           </motion.p>
           <h1 className="font-display text-5xl font-semibold leading-[1.02] sm:text-6xl xl:text-7xl">
             {"Discover What the Cards Reveal".split(" ").map((w, i) => (

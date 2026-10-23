@@ -42,7 +42,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       </div>
       <section className="glass mt-10 rounded-3xl p-6 text-center">
         <p className="font-display text-2xl text-gold-soft">Put it to the test</p>
-        <p className="mt-2 text-sm text-white/65">Reading this is nice; pulling the cards is nicer. Your first two 5-card readings are free.</p>
+        <p className="mt-2 text-sm text-white/65">Reading this is nice; pulling the cards is nicer. 3 free readings here every day.</p>
         <div className="mt-4 flex flex-wrap justify-center gap-3 text-sm">
           <Link href="/reading" className="btn-glow rounded-full px-6 py-2.5">Free 5-card reading</Link>
           <Link href="/yes-or-no" className="btn-ghost rounded-full px-6 py-2.5">Yes/No pull</Link>

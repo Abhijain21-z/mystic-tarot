@@ -161,7 +161,7 @@ export default function MysticHome() {
     { I: Layers, t: "Spin the Cards", d: "Get 5 random tarot cards" },
     { I: Hand, t: "Select 5 Cards", d: "Choose the cards you feel drawn to" },
     { I: ScrollText, t: "Get Your Reading", d: "Receive detailed predictions" },
-    { I: UserRound, t: "Create Account", d: "After 2 free readings, pay $1 per reading" },
+    { I: UserRound, t: "Create Account", d: "3 free readings daily, pay beyond that" },
   ];
   const feats = [
     { I: Orbit, t: "Real Tarot Cards", d: "Authentic 78-card deck design" },
@@ -226,7 +226,7 @@ export default function MysticHome() {
           <motion.aside initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="order-3 mx-auto w-full max-w-xs rounded-xl border border-gold/60 bg-black/50 p-6 backdrop-blur-md">
             <h2 className="text-center font-display text-2xl leading-tight text-gold-soft">Accurate<br />Tarot Readings</h2>
             <ul className="mt-4 space-y-2.5 text-sm text-white/85">
-              {["Get personalized insights", "Simple & easy process", "2 free readings for new users", "Complete 78-card deck"].map((t) => (
+              {["Get personalized insights", "Simple & easy process", "3 free readings every day", "Complete 78-card deck"].map((t) => (
                 <li key={t} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-gold" />{t}</li>
               ))}
             </ul>
@@ -337,7 +337,7 @@ export default function MysticHome() {
           <Link href="/reading" className="mt-7 inline-flex items-center gap-2 rounded-lg bg-gradient-to-b from-gold-soft to-gold px-8 py-3.5 font-semibold text-ink shadow-[0_0_35px_rgba(232,194,106,0.6)] transition hover:scale-105">
             Start Your Free Reading <ArrowRight className="h-4 w-4" />
           </Link>
-          <p className="mt-3 text-sm text-white/75">2 Free Readings for New Users</p>
+          <p className="mt-3 text-sm text-white/75">3 Free Readings Every Day</p>
         </Reveal>
       </section>
     </div>

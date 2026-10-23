@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const ZODIAC_FAQ_LINKS = ZODIAC.slice(0, 2);
 const TOOL_FAQS: { q: string; a: string }[] = [
-  { q: "Is a yes/no tarot reading free here?", a: "Yes — the single-card yes/no tool is completely free with no account required. Full 5-card readings are free for your first two sessions, then $1 each." },
+  { q: "Is a yes/no tarot reading free here?", a: "Yes — the single-card yes/no tool is completely free with no account required. Full 5-card readings are free 3 times a day, then $1 each." },
   { q: "How is the verdict calculated?", a: "Each card has an upright and reversed verdict from position-aware reading practice — Sun and Aces lean clear yes; most Swords lean no; Twos, Pages and the Moon say 'information needed first'." },
   { q: "Can I trust a one-card answer for big decisions?", a: "For big, layered decisions, a one-card verdict is a prompt, not a plan. Pair it with the 5-card reading (free twice, then $1) which shows Past, Present, Hidden, Advice and Outcome." },
   { q: "What should I ask yes/no tarot?", a: "One decision in one timeframe: 'Should I take Thursday's offer?' works. If the card feels contradictory, your question usually smuggled two questions — rewrite it and draw again after a pause." },

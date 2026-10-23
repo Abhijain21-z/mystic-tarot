@@ -93,12 +93,12 @@ export function Features() {
 export function Pricing() {
   return (
     <section id="pricing" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 py-24">
-      <Heading eyebrow="Energy Exchange" title={<>Simple, Honest <span className="text-gradient-gold italic">Pricing</span></>} sub="1 tarot reading = 1 credit. Your first 2 readings are always free." />
+      <Heading eyebrow="Energy Exchange" title={<>Simple, Honest <span className="text-gradient-gold italic">Pricing</span></>} sub="3 free readings every day. Beyond that, 1 tarot reading = 1 credit." />
       <div className="grid gap-6 md:grid-cols-3">
         <Reveal><div className="glass flex h-full flex-col rounded-3xl p-8">
           <p className="text-sm uppercase tracking-widest text-azure">Welcome Gift</p>
           <p className="mt-4 font-display text-6xl">Free</p>
-          <p className="text-white/60">First 2 readings for every new user</p>
+          <p className="text-white/60">3 free readings daily — for everyone, every day</p>
           <ul className="my-6 space-y-2 text-sm text-white/75">{["Full 5-card spread", "All life-area insights", "No card required"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
           <Link href="/reading" className="btn-ghost mt-auto rounded-full px-6 py-3 text-center">Start Free Reading</Link>
         </div></Reveal>
