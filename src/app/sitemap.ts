@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { TAROT_DECK } from "@/data/tarot";
 import { ZODIAC, CITIES, BLOG } from "@/data/seo";
+import { QA_ALL } from "@/data/qa";
 
 const BASE = "https://tarot-reader-pied.vercel.app";
 
@@ -28,6 +29,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const zodiac: Row[] = ZODIAC.map((z) => ({ url: `${BASE}/zodiac/${z.sign.toLowerCase()}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 }));
   const cities: Row[] = CITIES.map((c) => ({ url: `${BASE}/tarot-in/${c.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 }));
   const posts: Row[] = BLOG.map((b) => ({ url: `${BASE}/blog/${b.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.8 }));
+  const qaHub: Row[] = [{ url: `${BASE}/tarot-qa`, lastModified: now, changeFrequency: "weekly", priority: 0.8 }];
+  const qa: Row[] = QA_ALL.map((e) => ({ url: `${BASE}/tarot-qa/${e.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.6 }));
 
-  return [...statics, ...cards, ...zodiac, ...cities, ...posts];
+  return [...statics, ...cards, ...zodiac, ...cities, ...posts, ...qaHub, ...qa];
 }

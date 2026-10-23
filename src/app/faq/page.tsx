@@ -21,6 +21,11 @@ export default function Page() {
         <Link href="/yes-or-no" className="btn-ghost rounded-full px-6 py-2.5">Yes/No pull</Link>
         <Link href="/quiz" className="btn-ghost rounded-full px-6 py-2.5">Birthday quiz</Link>
       </div>
+      <section className="glass mt-8 rounded-3xl border border-gold/30 p-6 text-center">
+        <p className="font-display text-2xl text-gold-soft">150+ more questions, one page each</p>
+        <p className="mt-2 text-sm text-white/65">Every search question people ask — &ldquo;are tarot cards demonic&rdquo;, &ldquo;what tarot card is a Scorpio&rdquo;, &ldquo;where to buy tarot cards&rdquo;, &ldquo;should I shuffle&rdquo; — has its own straight answer page now.</p>
+        <Link href="/tarot-qa" className="btn-glow mt-4 inline-block rounded-full px-6 py-2.5">Open the full Tarot Q&amp;A</Link>
+      </section>
       <section className="mt-10">
         {FAQS.map((f) => (
           <details key={f.q} className="glass mb-3 rounded-2xl px-5 py-4 [&_summary::-webkit-details-marker]:hidden">
