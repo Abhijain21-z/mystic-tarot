@@ -79,7 +79,7 @@ function StreamDashboard({ onChoose }: { onChoose: (id: string) => void }) {
           );
         })}
       </div>
-      <p className="mt-6 text-center text-xs text-white/40">3 free readings every day — mix streams or go deep on one. Only the bold go Pro. 🔥</p>
+      <p className="mt-6 text-center text-xs text-white/40">3 free readings every day — mix streams or go deep on one. Only the brave go Pro. 🔥</p>
     </div>
   );
 }
@@ -94,19 +94,19 @@ function QuotaLine({ user, daily }: { user: { credits: number } | null; daily: D
   return <>Today&apos;s free readings: <b className="text-gold">{Math.max(0, DAILY_FREE_LIMIT - used)}/{DAILY_FREE_LIMIT}</b> left — credits unlock more.</>;
 }
 
-/* ─── "Only the bold go Pro" — challenge upsell shown when the daily free quota is over ─── */
+/* ─── "Only the brave go Pro" — challenge upsell shown when the daily free quota is over ─── */
 function ChallengePanel({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`glass relative overflow-hidden text-center ${compact ? "rounded-3xl p-6" : "max-w-xl rounded-[2rem] p-8 sm:p-10"}`}>
       <span aria-hidden className="pointer-events-none absolute -top-20 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-magenta/30 blur-3xl" />
       <p aria-hidden className="text-4xl">🔥</p>
       <h2 className="mt-2 font-display text-3xl sm:text-4xl">
-        Only the <span className="text-gradient-gold italic">bold</span> go Pro.
+        Only the <span className="text-gradient-gold italic">brave</span> go Pro.
       </h2>
       <p className="mx-auto mt-3 max-w-md text-white/75">
-        You&apos;ve used today&apos;s {DAILY_FREE_LIMIT} free readings. <b className="text-gold">The bold don&apos;t wait for tomorrow</b> — they take the answer now.
+        You&apos;ve used today&apos;s {DAILY_FREE_LIMIT} free readings. <b className="text-gold">The brave don&apos;t wait for tomorrow</b> — they take the answer now.
         <br />
-        <span className="text-gold-soft">Are you bold enough, or shall the cards wait?</span>
+        <span className="text-gold-soft">Are you brave enough, or shall the cards wait?</span>
       </p>
       <ul className="mx-auto mt-5 max-w-sm space-y-2 text-left text-sm text-white/70">
         <li className="flex items-center gap-2"><span aria-hidden>✦</span>Unlimited readings — no daily cap</li>
@@ -115,7 +115,7 @@ function ChallengePanel({ compact = false }: { compact?: boolean }) {
       </ul>
       <div className="mt-6 flex flex-col items-center gap-3">
         <Link href="/pricing" className="btn-glow inline-flex items-center gap-2 rounded-full px-8 py-4">
-          <Flame className="h-5 w-5" /> Prove it — Go Pro <ArrowRight className="h-4 w-4" />
+          <Flame className="h-5 w-5" /> Take the challenge — Unlock Pro <ArrowRight className="h-4 w-4" />
         </Link>
         <p className="text-xs text-white/45">Not today? Fair — {DAILY_FREE_LIMIT} free readings reset tomorrow. 😌</p>
       </div>
@@ -428,7 +428,7 @@ export default function ReadingFlow() {
               )}
               {daily && !canRead && (
                 <p className="text-center text-sm text-gold-soft">
-                  <Flame className="mr-1 inline h-4 w-4" />Daily limit done — <Link href="/pricing" className="underline decoration-gold/60 underline-offset-2 hover:text-gold">only the bold go Pro</Link>.
+                  <Flame className="mr-1 inline h-4 w-4" />Daily limit done — <Link href="/pricing" className="underline decoration-gold/60 underline-offset-2 hover:text-gold">only the brave go Pro</Link>.
                 </p>
               )}
             </div>
