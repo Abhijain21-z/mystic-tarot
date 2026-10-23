@@ -2,11 +2,38 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Heart, Briefcase, Coins, Sparkles, Compass, Sun, ShieldAlert } from "lucide-react";
+import type { LensKey } from "@/lib/streams";
 import type { ReadingCard } from "@/lib/interpret";
 import { TarotImage } from "../TarotCardFace";
 
-export default function ReadingResult({ cards, defaultOpen = 0 }: { cards: ReadingCard[]; defaultOpen?: number | null }) {
+export default function ReadingResult({ cards, defaultOpen = 0, primaryLens = null }: { cards: ReadingCard[]; defaultOpen?: number | null; primaryLens?: LensKey | null }) {
+  return (
+    <div>
+      {cards.length > 0 && (
+        <div className="glass mb-6 rounded-3xl border border-gold/30 p-5 text-center">
+          <p className="text-xs uppercase tracking-widest text-gold/70">The Reading in One Line</p>
+          <p className="mx-auto mt-2 max-w-2xl font-display text-xl leading-snug sm:text-2xl">
+            {cards[0].summary} Leading energies: <b className="text-gold-soft">{cards.map((c) => c.name).join(" · ")}</b>
+          </p>
+        </div>
+      )}
+      <ReadingCardList cards={cards} defaultOpen={defaultOpen} primaryLens={primaryLens} />
+    </div>
+  );
+}
+
+export function ReadingCardList({ cards, defaultOpen = 0, primaryLens = null }: { cards: ReadingCard[]; defaultOpen?: number | null; primaryLens?: LensKey | null }) {
   const [open, setOpen] = useState<number | null>(defaultOpen);
+  /* Stream-aware lens order: the stream's primary field leads the detailed panels. */
+  const lensSections: { I: React.ComponentType<{ className?: string }>; t: string; k: LensKey; col: string }[] = [
+    { I: Heart, t: "Love", k: "love", col: "text-pink-300" },
+    { I: Briefcase, t: "Career", k: "career", col: "text-sky-300" },
+    { I: Coins, t: "Money", k: "money", col: "text-gold" },
+    { I: Sparkles, t: "Emotional / Spiritual", k: "spiritual", col: "text-violet-300" },
+  ];
+  const ordered = primaryLens
+    ? [lensSections.find((s) => s.k === primaryLens)!, ...lensSections.filter((s) => s.k !== primaryLens)]
+    : lensSections;
   return (
     <div className="space-y-4">
       {cards.map((c, i) => {
@@ -37,15 +64,10 @@ export default function ReadingResult({ cards, defaultOpen = 0 }: { cards: Readi
                         <p className="mt-1 text-white/80">{c.detail}</p>
                       </div>
                       <div className="grid gap-3 sm:grid-cols-2">
-                        {[
-                          { I: Heart, t: "Love", v: c.love, col: "text-pink-300" },
-                          { I: Briefcase, t: "Career", v: c.career, col: "text-sky-300" },
-                          { I: Coins, t: "Money", v: c.money, col: "text-gold" },
-                          { I: Sparkles, t: "Emotional / Spiritual", v: c.spiritual, col: "text-violet-300" },
-                        ].map(({ I, t, v, col }) => (
-                          <div key={t} className="rounded-2xl bg-white/[0.03] p-4">
+                        {ordered.map(({ I, t, k, col }) => (
+                          <div key={k} className="rounded-2xl bg-white/[0.03] p-4">
                             <p className={`flex items-center gap-2 text-sm font-medium ${col}`}><I className="h-4 w-4" />{t}</p>
-                            <p className="mt-1 text-sm text-white/75">{v}</p>
+                            <p className="mt-1 text-sm text-white/75">{c[k]}</p>
                           </div>
                         ))}
                       </div>

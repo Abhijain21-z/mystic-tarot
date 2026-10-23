@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useAnimationFrame, useMotionValue } from "framer-motion";
-import { RotateCcw, Loader2, Sparkles, UserPlus, Flame, ArrowRight } from "lucide-react";
+import { RotateCcw, Loader2, Sparkles, UserPlus, Flame, ArrowRight, ArrowLeft, Heart, Briefcase, Coins, Home, Rocket, Wind, Handshake, CircleDot } from "lucide-react";
 import { CardBack, TarotImage, CARD_BACK_SRC } from "../TarotCardFace";
 import CardWheel from "./CardWheel";
 import ReadingResult from "./ReadingResult";
@@ -11,9 +11,56 @@ import { MysticReader } from "../MysticPersona";
 import { useApp } from "../Providers";
 import { readingFromPicks } from "@/lib/reading-local";
 import { DAILY_FREE_LIMIT, dailyInfo, recordDailyReading, type DailyInfo } from "@/lib/daily-quota";
+import { STREAMS, getStream, type Stream } from "@/lib/streams";
 import type { ReadingCard } from "@/lib/interpret";
 
-type Stage = "spin" | "select" | "reveal" | "result";
+type Stage = "stream" | "spin" | "select" | "reveal" | "result";
+
+/* Icon per life-stream tile. */
+const STREAM_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  love: Heart,
+  career: Briefcase,
+  money: Coins,
+  family: Home,
+  business: Rocket,
+  emotions: Wind,
+  relationship: Handshake,
+  final: CircleDot,
+};
+
+/* ─── The front dashboard: pick which life-stream to read ─── */
+function StreamDashboard({ onChoose }: { onChoose: (id: string) => void }) {
+  return (
+    <div>
+      <h2 className="text-center font-display text-4xl sm:text-5xl">
+        Pick Your <span className="text-gradient-gold italic">Life Stream</span>
+      </h2>
+      <p className="mx-auto mt-3 max-w-2xl text-center text-white/70">
+        One destiny, many doors. Choose the field you want the cards to open — every stream is its own full 5-card reading, free {DAILY_FREE_LIMIT} times a day.
+      </p>
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {STREAMS.map((s) => {
+          const I = STREAM_ICONS[s.id] ?? CircleDot;
+          return (
+            <button
+              key={s.id}
+              onClick={() => onChoose(s.id)}
+              className={`glass group flex aspect-square flex-col items-center justify-center gap-3 rounded-3xl p-6 text-center transition ${s.glow}`}
+            >
+              <span className={`grid h-14 w-14 place-items-center rounded-2xl ${s.accent}`}>
+                <I className="h-7 w-7" />
+              </span>
+              <span className="font-display text-xl leading-tight text-gold-soft group-hover:text-gold">{s.tileTitle}</span>
+              <span className="text-sm leading-snug text-white/60">{s.tileDesc}</span>
+              <span className="mt-1 inline-flex items-center gap-1 text-xs text-gold/80">5 cards · <b className="text-gold">free</b> <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="mt-6 text-center text-xs text-white/40">3 free readings every day — mix streams or go deep on one. Only the himmatwar go Pro. 🔥</p>
+    </div>
+  );
+}
 
 /* ─── today's free-quota / credits line shown above every stage except result ─── */
 function QuotaLine({ user, daily }: { user: { credits: number } | null; daily: DailyInfo | null }) {
@@ -154,8 +201,11 @@ export default function ReadingFlow() {
   const [faces, setFaces] = useState<Record<number, { image: string; name: string }>>({});
   const [showSignup, setShowSignup] = useState(false);
   const [question, setQuestion] = useState("");
+  const [streamId, setStreamId] = useState("final");
   const [daily, setDaily] = useState<DailyInfo | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
+
+  const stream: Stream = getStream(streamId);
 
   /* Daily free quota lives client-side (3/day); paid credits always bypass it. */
   useEffect(() => { setDaily(dailyInfo()); }, []);
@@ -165,6 +215,14 @@ export default function ReadingFlow() {
   const dailyUsed = daily?.used ?? 0;
 
   useEffect(() => { topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [stage]);
+
+  function chooseStream(id: string) {
+    setStreamId(id);
+    setQuestion("");
+    setPicked([]); setCards([]); setRevealed(0); setFlipMode(false); setWheelRevealed(0); setFaces({});
+    emitSound("select");
+    setStage("spin");
+  }
 
   function spin() {
     setSpinning(true); emitSound("spin");
@@ -192,7 +250,7 @@ export default function ReadingFlow() {
     // No server needed: build the reading instantly from the user's 5 picks.
     window.setTimeout(() => {
       try {
-        const drawn = readingFromPicks(picks);
+        const drawn = readingFromPicks(picks, streamId);
         const f: Record<number, { image: string; name: string }> = {};
         picks.forEach((pi, k) => { f[pi] = { image: drawn[k].image, name: drawn[k].name }; });
         setFaces(f);
@@ -234,9 +292,14 @@ export default function ReadingFlow() {
   return (
     <div ref={topRef} className="mx-auto max-w-6xl scroll-mt-28 px-4 pb-10 pt-28 sm:px-6">
       <div className="mb-6 flex flex-wrap items-center justify-center gap-2 text-xs">
-        {(["spin", "select", "reveal", "result"] as Stage[]).map((s, i) => (
-          <span key={s} className={`rounded-full px-3 py-1 capitalize ${stage === s ? "bg-gold text-ink" : "glass text-white/60"}`}>{i + 1}. {s}</span>
+        {(["stream", "spin", "select", "reveal", "result"] as Stage[]).map((s, i) => (
+          <span key={s} className={`rounded-full px-3 py-1 capitalize ${stage === s ? "bg-gold text-ink" : "glass text-white/60"}`}>{i === 0 ? "1" : i}. {s === "stream" ? "path" : s}</span>
         ))}
+        {stage !== "stream" && stage !== "result" && (
+          <button onClick={() => setStage("stream")} className="glass inline-flex items-center gap-1 rounded-full px-3 py-1 text-white/60 hover:text-gold">
+            <ArrowLeft className="h-3 w-3" /> {stream.label}
+          </button>
+        )}
       </div>
       {loaded && stage !== "result" && (
         <p className="mb-4 text-center text-sm text-white/60" aria-live="polite">
@@ -245,8 +308,18 @@ export default function ReadingFlow() {
       )}
 
       <AnimatePresence mode="wait">
+        {stage === "stream" && (
+          <motion.section key="stream" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+            <StreamDashboard onChoose={chooseStream} />
+          </motion.section>
+        )}
+
         {stage === "spin" && (
           <motion.section key="spin" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 1.1 }} className="flex flex-col items-center gap-6">
+            <p className={`inline-flex items-center gap-2 rounded-full px-4 py-1 text-sm ${stream.accent}`}>
+              <ArrowLeft className="h-3.5 w-3.5 cursor-pointer opacity-70 hover:opacity-100" onClick={() => setStage("stream")} />
+              {stream.label}
+            </p>
             <h2 className="text-center font-display text-4xl">Spin the Mystical Deck</h2>
             {canRead ? (
               <>
@@ -260,7 +333,7 @@ export default function ReadingFlow() {
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     maxLength={140}
-                    placeholder="Love, career, money — destiny answers what you dare to ask…"
+                    placeholder={stream.questionHint}
                     className="glass w-full rounded-full px-5 py-3.5 text-center text-sm text-white placeholder:text-white/35 outline-none focus:ring-1 focus:ring-gold/60"
                   />
                 </label>
@@ -274,8 +347,9 @@ export default function ReadingFlow() {
 
         {stage === "select" && (
           <motion.section key={`select-${deckKey}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col items-center">
+            <p className={`mb-3 inline-flex items-center gap-2 rounded-full px-4 py-1 text-sm ${stream.accent}`}>{stream.label}</p>
             <h2 className="text-center font-display text-4xl sm:text-5xl"><span className="text-gradient-gold">Choose Your Tarot Cards</span></h2>
-            <p className="mx-auto mt-3 max-w-xl text-center text-white/70">Scroll or swipe the wheel to explore all 78 cards and select 5 cards that feel right for you.</p>
+            <p className="mx-auto mt-3 max-w-xl text-center text-white/70">Scroll or swipe the wheel to explore all 78 cards and select 5 cards for your {stream.label.toLowerCase()} reading.</p>
 
             <div className="relative mt-2 w-full">
               {/* left info panel */}
@@ -350,7 +424,8 @@ export default function ReadingFlow() {
 
         {stage === "result" && (
           <motion.section key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h2 className="text-center font-display text-4xl sm:text-5xl">Your <span className="text-gradient-gold italic">Personalized</span> Reading</h2>
+            <p className={`mb-3 inline-flex items-center gap-2 rounded-full px-4 py-1 text-sm ${stream.accent}`}>{stream.label}</p>
+            <h2 className="text-center font-display text-4xl sm:text-5xl">Your <span className="text-gradient-gold italic">Personalized</span> {stream.label.split(" ")[0]} Reading</h2>
             <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-white/60">These insights are for reflection — possibilities, not certainties. Tap any card to expand.</p>
             {question.trim() && (
               <div className="glass mx-auto mt-6 max-w-2xl rounded-2xl border border-gold/30 p-4 text-center">
@@ -367,7 +442,7 @@ export default function ReadingFlow() {
                 <Link href="/login?mode=register&next=/history" className="btn-glow rounded-full px-5 py-2 text-sm">Save Reading</Link>
               </div>
             )}
-            <div className="mt-8"><ReadingResult cards={cards} /></div>
+            <div className="mt-8"><ReadingResult cards={cards} primaryLens={stream.primaryLens} /></div>
             {dailyUsed >= DAILY_FREE_LIMIT && !creditsUnlimited && (
               <div className="mt-8">
                 <ChallengePanel compact />
