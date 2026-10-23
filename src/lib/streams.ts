@@ -10,6 +10,7 @@ export type LensKey = "love" | "career" | "money" | "spiritual";
 export interface Stream {
   id: string;
   label: string; // short name shown everywhere
+  short: string; // ultra-short label for chips on the card-picker
   tileTitle: string; // dashboard tile heading
   tileDesc: string; // dashboard tile description
   accent: string; // tailwind classes for the icon chip
@@ -24,6 +25,7 @@ export const STREAMS: Stream[] = [
   {
     id: "love",
     label: "Love & Romance",
+    short: "Love",
     tileTitle: "Tarot for Your Love Life",
     tileDesc: "What their heart is doing, where it's heading, what to do next.",
     accent: "bg-pink-500/15 text-pink-200 border border-pink-400/30",
@@ -36,6 +38,7 @@ export const STREAMS: Stream[] = [
   {
     id: "career",
     label: "Career & Job",
+    short: "Career",
     tileTitle: "Tarot for Your Career",
     tileDesc: "Job changes, growth, the boss's mind, your best move.",
     accent: "bg-sky-500/15 text-sky-200 border border-sky-400/30",
@@ -48,6 +51,7 @@ export const STREAMS: Stream[] = [
   {
     id: "money",
     label: "Money & Wealth",
+    short: "Money",
     tileTitle: "Tarot for Your Money",
     tileDesc: "Cash flow, hidden leaks, investments and where abundance flows.",
     accent: "bg-amber-500/15 text-amber-200 border border-amber-400/30",
@@ -60,6 +64,7 @@ export const STREAMS: Stream[] = [
   {
     id: "family",
     label: "Family & Home",
+    short: "Family",
     tileTitle: "Tarot for Your Family",
     tileDesc: "Home, parents, kids and the peace the household is seeking.",
     accent: "bg-orange-500/15 text-orange-200 border border-orange-400/30",
@@ -72,6 +77,7 @@ export const STREAMS: Stream[] = [
   {
     id: "business",
     label: "Business & Ambition",
+    short: "Business",
     tileTitle: "Tarot for Your Business",
     tileDesc: "Ventures, partners, scale, risk — the founder spread.",
     accent: "bg-emerald-500/15 text-emerald-200 border border-emerald-400/30",
@@ -84,6 +90,7 @@ export const STREAMS: Stream[] = [
   {
     id: "emotions",
     label: "Emotions & Healing",
+    short: "Emotions",
     tileTitle: "Tarot for Your Inner Self",
     tileDesc: "Stress, healing, closure, the weight you silently carry.",
     accent: "bg-violet-500/15 text-violet-200 border border-violet-400/30",
@@ -96,6 +103,7 @@ export const STREAMS: Stream[] = [
   {
     id: "relationship",
     label: "Relationship & Marriage",
+    short: "Relationship",
     tileTitle: "Tarot for Your Relationship",
     tileDesc: "Commitment, marriage, repair — the bond's whole journey.",
     accent: "bg-rose-500/15 text-rose-200 border border-rose-400/30",
@@ -108,6 +116,7 @@ export const STREAMS: Stream[] = [
   {
     id: "final",
     label: "All-Around Destiny",
+    short: "All",
     tileTitle: "Tarot for Everything",
     tileDesc: "The classic full spread — past, present, hidden, advice, outcome.",
     accent: "bg-gold/15 text-gold-soft border border-gold/30",

@@ -28,6 +28,28 @@ const STREAM_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
   final: CircleDot,
 };
 
+/* ─── "You're reading for:" chips — sit on top of the card picker so the user always
+       knows (and can switch) which field these cards are being chosen for ─── */
+function StreamChips({ current, onSwitch }: { current: string; onSwitch: (id: string) => void }) {
+  return (
+    <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Choose which life field this reading is for">
+      {STREAMS.map((s) => {
+        const active = s.id === current;
+        return (
+          <button
+            key={s.id}
+            onClick={() => { if (!active) onSwitch(s.id); }}
+            aria-pressed={active}
+            className={`rounded-full px-4 py-1.5 text-sm transition ${active ? "bg-gold text-ink font-semibold shadow-[0_0_18px_rgba(232,194,106,0.55)]" : "glass text-white/65 hover:text-gold hover:border-gold/50"}`}
+          >
+            {s.short}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ─── The front dashboard: pick which life-stream to read ─── */
 function StreamDashboard({ onChoose }: { onChoose: (id: string) => void }) {
   return (
@@ -224,6 +246,17 @@ export default function ReadingFlow() {
     setStage("spin");
   }
 
+  /* Switch fields mid-flow (from the card picker) — keep the user where they are,
+     just deal a fresh wheel for the new field. */
+  function switchStream(id: string) {
+    if (id === streamId) return;
+    setStreamId(id);
+    setQuestion("");
+    setPicked([]); setRevealed(0); setFlipMode(false); setWheelRevealed(0); setFaces({});
+    setDeckKey((k) => k + 1);
+    emitSound("select");
+  }
+
   function spin() {
     setSpinning(true); emitSound("spin");
     setTimeout(() => emitSound("burst"), 1800);
@@ -316,10 +349,10 @@ export default function ReadingFlow() {
 
         {stage === "spin" && (
           <motion.section key="spin" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 1.1 }} className="flex flex-col items-center gap-6">
-            <p className={`inline-flex items-center gap-2 rounded-full px-4 py-1 text-sm ${stream.accent}`}>
-              <ArrowLeft className="h-3.5 w-3.5 cursor-pointer opacity-70 hover:opacity-100" onClick={() => setStage("stream")} />
-              {stream.label}
-            </p>
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-center text-xs uppercase tracking-widest text-gold/70">Reading for</p>
+              <StreamChips current={streamId} onSwitch={switchStream} />
+            </div>
             <h2 className="text-center font-display text-4xl">Spin the Mystical Deck</h2>
             {canRead ? (
               <>
@@ -347,9 +380,10 @@ export default function ReadingFlow() {
 
         {stage === "select" && (
           <motion.section key={`select-${deckKey}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col items-center">
-            <p className={`mb-3 inline-flex items-center gap-2 rounded-full px-4 py-1 text-sm ${stream.accent}`}>{stream.label}</p>
-            <h2 className="text-center font-display text-4xl sm:text-5xl"><span className="text-gradient-gold">Choose Your Tarot Cards</span></h2>
-            <p className="mx-auto mt-3 max-w-xl text-center text-white/70">Scroll or swipe the wheel to explore all 78 cards and select 5 cards for your {stream.label.toLowerCase()} reading.</p>
+            <p className="mb-2 text-center text-xs uppercase tracking-widest text-gold/70">You are choosing these cards for</p>
+            <StreamChips current={streamId} onSwitch={switchStream} />
+            <h2 className="mt-4 text-center font-display text-4xl sm:text-5xl"><span className="text-gradient-gold">Choose Your Tarot Cards</span></h2>
+            <p className="mx-auto mt-3 max-w-xl text-center text-white/70">Focus on your <b className="text-gold-soft">{stream.label}</b> question, then scroll or swipe the wheel and pick 5 cards that feel right.</p>
 
             <div className="relative mt-2 w-full">
               {/* left info panel */}
