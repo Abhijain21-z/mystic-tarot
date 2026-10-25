@@ -142,12 +142,63 @@ function Divider({ title }: { title: string }) {
   );
 }
 
+/* ─── Welcome popup: 6 seconds in, invite the visitor straight into their reading.
+       "Yes" routes to the /reading flow; one-shot per page load (auto-closable). ─── */
+function WelcomePopup({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const router = useRouter();
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[80] grid place-items-center bg-black/70 px-4 backdrop-blur-sm"
+          role="dialog" aria-modal="true" aria-label="Start your tarot reading"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.85, y: 24, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.9, y: 12, opacity: 0 }}
+            transition={{ type: "spring", damping: 18, stiffness: 260 }}
+            className="glass relative w-full max-w-md rounded-[2rem] border border-gold/40 p-8 text-center shadow-[0_0_60px_rgba(232,194,106,0.35)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span aria-hidden className="absolute -top-5 left-1/2 -translate-x-1/2 text-4xl">🔮</span>
+            <h2 className="font-display text-3xl text-gold-soft">Your cards are <span className="text-gradient-gold italic">waiting</span></h2>
+            <p className="mt-3 text-white/80">
+              Want to know what your <b className="text-gold-soft">love, career, money &amp; destiny</b> hold?
+              Let&apos;s draw your five tarot cards — <b className="text-gold-soft">what are they telling you today?</b>
+            </p>
+            <div className="mt-6 flex flex-col gap-3">
+              <button
+                onClick={() => { window.dispatchEvent(new CustomEvent("tarot:sound", { detail: "spin" })); router.push("/reading"); }}
+                className="btn-glow rounded-full px-8 py-4 text-lg"
+              >
+                Yes — Show My Cards <ArrowRight className="ml-1 inline h-4 w-4" />
+              </button>
+              <button onClick={onClose} className="btn-ghost rounded-full px-6 py-3 text-sm text-white/60 hover:text-gold">
+                Maybe later
+              </button>
+            </div>
+            <p className="mt-4 text-xs text-white/40">3 free readings every day · full 78-card deck · no signup to start</p>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function MysticHome() {
   const router = useRouter();
   const [fast, setFast] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+
+  /* 6 seconds after landing — the "shall we read your cards" invitation (once per page view). */
+  useEffect(() => {
+    const t = setTimeout(() => setPopupOpen(true), 6000);
+    return () => clearTimeout(t);
+  }, []);
 
   function spin() {
     if (fast) return;
@@ -184,6 +235,7 @@ export default function MysticHome() {
 
   return (
     <div className="overflow-hidden">
+      <WelcomePopup open={popupOpen} onClose={() => setPopupOpen(false)} />
       {/* ================= HERO ================= */}
       <section ref={heroRef} className="relative pt-24">
         <motion.div style={{ y: bgY }} className="absolute inset-0 -z-10">

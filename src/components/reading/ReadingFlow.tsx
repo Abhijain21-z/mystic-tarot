@@ -313,10 +313,15 @@ export default function ReadingFlow() {
     return () => clearTimeout(t);
   }, [stage, revealed]);
 
-  /* Logged-in users get the full prediction automatically after all 5 cards flip. */
+  /* Zero clicks after the 5th card: members go straight to the result;
+     guests get the (free) signup gate popped automatically, no button needed. */
   useEffect(() => {
-    if (stage !== "reveal" || revealed < 5 || !user) return;
-    const t = setTimeout(() => { emitSound("reveal"); setStage("result"); }, 900);
+    if (stage !== "reveal" || revealed < 5) return;
+    const t = setTimeout(() => {
+      emitSound("reveal");
+      if (!user) { setShowSignup(true); return; }
+      setStage("result");
+    }, 900);
     return () => clearTimeout(t);
   }, [stage, revealed, user]);
 
@@ -411,12 +416,10 @@ export default function ReadingFlow() {
 
             <div className="mt-3 flex min-h-[60px] flex-col items-center justify-center gap-3">
               <AnimatePresence mode="wait">
-                {picked.length === 5 ? (
-                  <motion.button key="reveal" initial={{ opacity: 0, scale: 0.85, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }}
-                    onClick={() => reveal()} disabled={loading}
-                    className="btn-glow inline-flex items-center gap-3 rounded-full border-2 border-gold/80 px-12 py-4 font-display text-2xl shadow-[0_0_45px_rgba(232,194,106,0.6)]">
-                    {loading ? <><Loader2 className="h-5 w-5 animate-spin" />Consulting the cosmos…</> : <><Sparkles className="h-5 w-5 text-gold" />Reveal My 5 Cards</>}
-                  </motion.button>
+                {picked.length === 5 && !flipMode ? (
+                  <motion.p key="consult" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2 text-sm text-gold-soft" aria-live="polite">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Consulting the cosmos — your cards are turning face-up…
+                  </motion.p>
                 ) : (
                   <motion.p key="hint" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm text-white/50">
                     Tap a card to choose it — <b className="text-gold">{5 - picked.length}</b> more to go
@@ -443,14 +446,9 @@ export default function ReadingFlow() {
             </div>
             <AnimatePresence>
               {revealed >= 5 && (
-                <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} onClick={() => {
-                  emitSound("reveal");
-                  // Free card reveal for everyone — full prediction needs a free profile.
-                  if (!user) { setShowSignup(true); return; }
-                  setStage("result");
-                }} className="btn-glow mt-12 rounded-full px-10 py-4">
-                  Read My Full Prediction
-                </motion.button>
+                <motion.div key="gate-note" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="sr-only" aria-live="polite">
+                  {user ? "Opening your full prediction…" : "One free profile away — opening the gate…"}
+                </motion.div>
               )}
             </AnimatePresence>
           </motion.section>
