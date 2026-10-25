@@ -1,5 +1,5 @@
 /** FAQS + site config. Feed /faq and per-page JSON-LD. */
-export const SITE = { name: "MysticTarot", url: "https://tarot-reader-pied.vercel.app" };
+export const SITE = { name: "MysticTarot", url: "https://www.tarotwin.com" };
 
 export type Faq = { q: string; a: string };
 

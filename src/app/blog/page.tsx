@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BLOG } from "@/data/seo";
 import { JsonLd } from "@/components/seo/Seo";
+import { SITE } from "@/data/seo-data";
 
 export const metadata: Metadata = {
   title: { absolute: "Tarot Blog — Guides on Faith, Accuracy, Money, Zodiac & Comparisons" },
@@ -16,8 +17,8 @@ export default function Page() {
     <article className="mx-auto max-w-4xl px-6 pt-28">
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "Blog",
-        name: "MysticTarot Journal", url: "https://tarot-reader-pied.vercel.app/blog",
-        blogPost: BLOG.map((b) => ({ "@type": "BlogPosting", headline: b.title, url: `https://tarot-reader-pied.vercel.app/blog/${b.slug}` })),
+        name: "MysticTarot Journal", url: `${SITE.url}/blog`,
+        blogPost: BLOG.map((b) => ({ "@type": "BlogPosting", headline: b.title, url: `${SITE.url}/blog/${b.slug}` })),
       }} />
       <h1 className="text-center font-display text-5xl">The Tarot <span className="text-gradient-gold">Journal</span></h1>
       <p className="mx-auto mt-3 max-w-xl text-center text-white/60">Plain-spoken guides across the five big questions of tarot: faith, accuracy, comparisons, cost and craft.</p>

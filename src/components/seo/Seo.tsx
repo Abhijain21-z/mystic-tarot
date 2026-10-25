@@ -1,4 +1,5 @@
 import type { Faq } from "@/data/seo";
+import { SITE } from "@/data/seo-data";
 
 export function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
@@ -42,7 +43,7 @@ export function breadcrumbSchema(items: { name: string; path: string }[]) {
       "@type": "ListItem",
       position: i + 1,
       name: it.name,
-      item: `https://tarot-reader-pied.vercel.app${it.path}`,
+      item: `${SITE.url}${it.path}`,
     })),
   };
 }
@@ -53,8 +54,8 @@ export function articleSchema(opts: { title: string; description: string; slug: 
     "@type": "Article",
     headline: opts.title,
     description: opts.description,
-    mainEntityOfPage: `https://tarot-reader-pied.vercel.app${opts.slug}`,
+    mainEntityOfPage: `${SITE.url}${opts.slug}`,
     author: { "@type": "Organization", name: "MysticTarot" },
-    publisher: { "@type": "Organization", name: "MysticTarot", url: "https://tarot-reader-pied.vercel.app" },
+    publisher: { "@type": "Organization", name: "MysticTarot", url: SITE.url },
   };
 }
