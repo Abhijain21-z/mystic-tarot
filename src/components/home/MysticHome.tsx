@@ -194,10 +194,10 @@ export default function MysticHome() {
         <div className="mx-auto grid max-w-7xl items-center gap-6 px-5 lg:grid-cols-[1fr_1.3fr_0.85fr]">
           <div className="order-2 text-center lg:order-1 lg:text-left">
             <motion.h1 initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="font-display text-5xl font-bold leading-[0.95] sm:text-6xl xl:text-7xl">
-              Discover<br /><span className="text-gradient-gold">Your Path</span>
+              Free Tarot<br /><span className="text-gradient-gold">Card Reading</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-4 text-lg text-white/85">
-              Let the Cards Reveal Insights for Love, Career, Health and Life.
+              <b className="text-gold-soft">Free tarot card reading prediction</b> — let the cards reveal insights for love, career, money, health and life, from the full 78-card deck. 3 free readings every day.
             </motion.p>
             <div className="mt-6 flex justify-center gap-6 lg:justify-start">
               {areas.map(({ I, l }, i) => (
