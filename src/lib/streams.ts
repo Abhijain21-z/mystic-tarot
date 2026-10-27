@@ -18,7 +18,7 @@ export interface Stream {
   questionHint: string; // placeholder for the optional question input
   lensPhrase: string; // replaces "seen through ..." in summaries
   primaryLens: LensKey | null; // which interpretation field leads (null = general)
-  positions: [string, string, string, string, string]; // 5 stream-specific position titles
+  positions: [string, string, string, string, string, string, string, string, string, string]; // 5 standard + 5 Pro-deep position titles
 }
 
 export const STREAMS: Stream[] = [
@@ -33,7 +33,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Ask about your love life — a person, a spark, a second chance…",
     lensPhrase: "the story between two hearts",
     primaryLens: "love",
-    positions: ["How They Feel", "The Present Spark", "The Hidden Truth", "What To Do Now", "Where It's Heading"],
+    positions: ["How They Feel", "The Present Spark", "The Hidden Truth", "What To Do Now", "Where It's Heading", "What Supports The Bond", "The Challenge Between You", "Outside Influences", "The Next Move For Love", "Love's Final Word"],
   },
   {
     id: "career",
@@ -46,7 +46,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Ask about your career — a switch, an offer, a promotion…",
     lensPhrase: "your professional climb",
     primaryLens: "career",
-    positions: ["Your Path So Far", "Where You Stand Now", "The Hidden Factor", "Your Best Move", "Where Your Career Leads"],
+    positions: ["Your Path So Far", "Where You Stand Now", "The Hidden Factor", "Your Best Move", "Where Your Career Leads", "What Supports Your Rise", "The Challenge At Work", "Outside Forces In Play", "Your Next Move", "Career's Final Word"],
   },
   {
     id: "money",
@@ -59,7 +59,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Ask about money — savings, a deal, a windfall, a worry…",
     lensPhrase: "the flow of your wealth",
     primaryLens: "money",
-    positions: ["Past Money Patterns", "Your Current Standing", "The Hidden Leak", "The Smart Move", "Where Wealth Flows"],
+    positions: ["Past Money Patterns", "Your Current Standing", "The Hidden Leak", "The Smart Move", "Where Wealth Flows", "What Supports Your Flow", "The Challenge With Money", "Outside Forces On Your Wealth", "Your Next Money Move", "Wealth's Final Word"],
   },
   {
     id: "family",
@@ -72,7 +72,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Ask about family — a rift, a home shift, a parent, a child…",
     lensPhrase: "the hearth your family gathers around",
     primaryLens: "spiritual",
-    positions: ["Roots & History", "The Home Right Now", "The Unspoken", "How To Heal It", "Where The Family Goes"],
+    positions: ["Roots & History", "The Home Right Now", "The Unspoken", "How To Heal It", "Where The Family Goes", "What Strengthens The Family", "The Challenge At Home", "Outside Voices", "The Next Step For Peace", "The Household's Final Word"],
   },
   {
     id: "business",
@@ -85,7 +85,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Ask about your business — a launch, a partner, a pivot…",
     lensPhrase: "the boardroom of your ambition",
     primaryLens: "career",
-    positions: ["The Foundation", "The Venture Right Now", "The Blind Spot", "The Founder's Move", "Where The Empire Leads"],
+    positions: ["The Foundation", "The Venture Right Now", "The Blind Spot", "The Founder's Move", "Where The Empire Leads", "What Supports The Venture", "The Challenge Ahead", "Outside Market Forces", "The Next Strategic Move", "The Venture's Final Word"],
   },
   {
     id: "emotions",
@@ -98,7 +98,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Ask about your inner self — a wound, a worry, a closure…",
     lensPhrase: "the quiet weather of your soul",
     primaryLens: "spiritual",
-    positions: ["What You Carry", "What You Feel Now", "The Hidden Weight", "How To Heal", "Where Peace Finds You"],
+    positions: ["What You Carry", "What You Feel Now", "The Hidden Weight", "How To Heal", "Where Peace Finds You", "What Supports Your Healing", "The Challenge Within", "Outside Pressures", "Your Next Step To Peace", "The Heart's Final Word"],
   },
   {
     id: "relationship",
@@ -111,7 +111,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Ask about your bond — marriage, trust, repair, forever…",
     lensPhrase: "the long road two people share",
     primaryLens: "love",
-    positions: ["How It Began", "The Bond Today", "The Hidden Dynamic", "The Repair Point", "Where The Bond Leads"],
+    positions: ["How It Began", "The Bond Today", "The Hidden Dynamic", "The Repair Point", "Where The Bond Leads", "What Supports The Bond", "The Challenge To Face", "Outside Influences", "The Next Step Together", "The Bond's Final Word"],
   },
   {
     id: "final",
@@ -124,7 +124,7 @@ export const STREAMS: Stream[] = [
     questionHint: "Whatever you dare to ask — destiny answers…",
     lensPhrase: "the roots of your current situation",
     primaryLens: null,
-    positions: ["Past / Background", "Present Situation", "Hidden Influence", "Advice", "Possible Outcome"],
+    positions: ["Past / Background", "Present Situation", "Hidden Influence", "Advice", "Possible Outcome", "What Supports You", "The Challenge", "Outside Forces", "The Next Move", "The Final Word"],
   },
 ];
 

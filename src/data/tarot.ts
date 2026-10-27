@@ -114,3 +114,12 @@ export const POSITIONS = [
   { key: "advice", title: "Advice", lens: "the approach the cards suggest" },
   { key: "outcome", title: "Possible Outcome", lens: "where things may lead if the current path continues" },
 ] as const;
+
+/** Pro-only expansion (cards 6–10 of a 10-card deep spread). */
+export const DEEP_POSITIONS = [
+  { key: "support", title: "What Supports You", lens: "an ally already helping behind the scenes" },
+  { key: "challenge", title: "The Challenge", lens: "the obstacle your next move must outsmart" },
+  { key: "external", title: "Outside Forces", lens: "the wider world acting on your situation" },
+  { key: "next", title: "The Next Move", lens: "the immediate action after this reading" },
+  { key: "verdict", title: "The Final Word", lens: "the deck's closing verdict on your question" },
+] as const;

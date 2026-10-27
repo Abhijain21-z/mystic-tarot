@@ -178,7 +178,7 @@ function WelcomePopup({ open, onClose }: { open: boolean; onClose: () => void })
                 Maybe later
               </button>
             </div>
-            <p className="mt-4 text-xs text-white/40">3 free readings every day · full 78-card deck · no signup to start</p>
+            <p className="mt-4 text-xs text-white/40">3 free readings every day · 5-card spreads free · <b className="text-gold-soft">Pro unlocks 10-card deep readings</b> 🔥</p>
           </motion.div>
         </motion.div>
       )}

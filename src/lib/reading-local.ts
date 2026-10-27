@@ -1,4 +1,4 @@
-import { TAROT_DECK, POSITIONS, type TarotCard } from "@/data/tarot";
+import { TAROT_DECK, POSITIONS, DEEP_POSITIONS, type TarotCard } from "@/data/tarot";
 import { getStream } from "./streams";
 import type { ReadingCard } from "./interpret";
 
@@ -11,18 +11,26 @@ const posFrameVerbs: Record<string, (title: string, name: string, core: string) 
   hidden: (t, n, c) => `In the ${t} position, ${n} hints that ${c} could be quietly working behind the scenes.`,
   advice: (t, n, c) => `As your ${t} card, ${n} invites you to work consciously with ${c}.`,
   outcome: (t, n, c) => `As a ${t}, ${n} points toward ${c} — one possibility, not a fixed fate.`,
+  support: (t, n, c) => `In the ${t} position, ${n} shows that ${c} is already on your side.`,
+  challenge: (t, n, c) => `Sitting as the ${t}, ${n} names ${c} as the knot your next move must untie.`,
+  external: (t, n, c) => `As the ${t}, ${n} suggests ${c} — outside forces you can prepare for.`,
+  next: (t, n, c) => `Your ${t} card, ${n}, urges you toward ${c} this week — small, concrete, doable.`,
+  verdict: (t, n, c) => `And the deck's word: as the ${t}, ${n} leaves you with ${c} — carry it when the page closes.`,
 };
 
 function interpretLocal(card: TarotCard, posIndex: number, reversed: boolean, streamId: string): ReadingCard {
   const stream = getStream(streamId);
-  const title = stream.positions[posIndex];
-  const key = POSITIONS[posIndex]?.key ?? "present";
+  const deep = posIndex >= 5;
+  const deepPos = deep ? DEEP_POSITIONS[posIndex - 5] : undefined;
+  const basePos = POSITIONS[posIndex];
+  const title = deep ? (deepPos?.title ?? stream.positions[posIndex]) : stream.positions[posIndex];
+  const key = deep ? (deepPos?.key ?? "next") : (basePos?.key ?? "present");
   const core = reversed ? card.reversed : card.upright;
   const orient = reversed ? "reversed" : "upright";
   const tone = reversed
     ? "Reversed, its energy may be turned inward, delayed or asking for gentle attention."
     : "Upright, its energy flows openly and supportively.";
-  const frame = posFrameVerbs[key](title, card.name, core);
+  const frame = posFrameVerbs[key]?.(title, card.name, core) ?? `For ${title}, ${card.name} speaks of ${core}.`;
   const rv = (s: string) => (reversed ? `there may be some blocks around ${s}; patience helps these ease` : s);
   return {
     cardId: card.id,
@@ -52,7 +60,8 @@ function interpretLocal(card: TarotCard, posIndex: number, reversed: boolean, st
  * (client-safe, no server needed).
  */
 export function readingFromPicks(picked: number[], streamId: string = "final"): ReadingCard[] {
-  return picked.slice(0, 5).map((wheelIdx, pos) => {
+  // Standard spread = 5 cards; Pro deep spread = up to 10 cards.
+  return picked.slice(0, 10).map((wheelIdx, pos) => {
     const card = TAROT_DECK[((wheelIdx % TAROT_DECK.length) + TAROT_DECK.length) % TAROT_DECK.length];
     const reversed = Math.random() < 0.3;
     return interpretLocal(card, pos, reversed, streamId);

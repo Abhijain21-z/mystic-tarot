@@ -110,6 +110,7 @@ function ChallengePanel({ compact = false }: { compact?: boolean }) {
       </p>
       <ul className="mx-auto mt-5 max-w-sm space-y-2 text-left text-sm text-white/70">
         <li className="flex items-center gap-2"><span aria-hidden>✦</span>Unlimited readings — no daily cap</li>
+        <li className="flex items-center gap-2"><span aria-hidden>✦</span><b className="text-gold-soft">10-card deep spreads</b> — pick twice the cards, twice the insight 🔥</li>
         <li className="flex items-center gap-2"><span aria-hidden>✦</span>Every position, every card, every detail unlocked</li>
         <li className="flex items-center gap-2"><span aria-hidden>✦</span>From 50¢ per reading ($50 = 100 credits)</li>
       </ul>
@@ -229,9 +230,11 @@ export default function ReadingFlow() {
 
   const stream: Stream = getStream(streamId);
 
-  /* Daily free quota lives client-side (3/day); paid credits always bypass it. */
+  /* Daily free quota lives client-side (3/day); paid credits always bypass it.
+     Pro perk: credits members pick 10 cards (deep spread) — free members pick 5. */
   useEffect(() => { setDaily(dailyInfo()); }, []);
   const creditsUnlimited = !!user && user.credits > 0;
+  const target = creditsUnlimited ? 10 : 5;
   const quotaLeft = daily ? daily.remaining > 0 : true; // optimistically allow render; gate shown once quota loads
   const canRead = creditsUnlimited || quotaLeft;
   const dailyUsed = daily?.used ?? 0;
@@ -269,16 +272,16 @@ export default function ReadingFlow() {
   function togglePick(i: number) {
     if (flipMode || loading) return;
     if (picked.includes(i)) { setPicked((p) => p.filter((x) => x !== i)); return; }
-    if (picked.length >= 5) return;
+    if (picked.length >= target) return;
     emitSound("select");
     const next = [...picked, i];
     setPicked(next);
-    // All 5 chosen — start the reveal automatically, no button press needed.
-    if (next.length === 5) reveal(next);
+    // Spread complete — start the reveal automatically, no button press needed.
+    if (next.length >= target) reveal(next);
   }
 
   function reveal(picks: number[] = picked) {
-    if (picks.length !== 5 || loading) return;
+    if (picks.length < 5 || loading) return;
     setLoading(true);
     // No server needed: build the reading instantly from the user's 5 picks.
     window.setTimeout(() => {
@@ -299,31 +302,31 @@ export default function ReadingFlow() {
   /* stagger the in-wheel 3D flips, then move into the reading layout */
   useEffect(() => {
     if (!flipMode) return;
-    if (wheelRevealed >= 5) {
-      const t = setTimeout(() => { setRevealed(5); setStage("reveal"); }, 1200);
+    if (wheelRevealed >= cards.length) {
+      const t = setTimeout(() => { setRevealed(cards.length); setStage("reveal"); }, 1200);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => { setWheelRevealed((n) => n + 1); emitSound("flip"); }, wheelRevealed === 0 ? 500 : 450);
     return () => clearTimeout(t);
-  }, [flipMode, wheelRevealed]);
+  }, [flipMode, wheelRevealed, cards.length]);
 
   useEffect(() => {
-    if (stage !== "reveal" || revealed >= 5) return;
+    if (stage !== "reveal" || revealed >= cards.length) return;
     const t = setTimeout(() => { setRevealed((n) => n + 1); emitSound("flip"); }, revealed === 0 ? 600 : 1100);
     return () => clearTimeout(t);
-  }, [stage, revealed]);
+  }, [stage, revealed, cards.length]);
 
-  /* Zero clicks after the 5th card: members go straight to the result;
+  /* Zero clicks after the final card: members go straight to the result;
      guests get the (free) signup gate popped automatically, no button needed. */
   useEffect(() => {
-    if (stage !== "reveal" || revealed < 5) return;
+    if (stage !== "reveal" || revealed < cards.length) return;
     const t = setTimeout(() => {
       emitSound("reveal");
       if (!user) { setShowSignup(true); return; }
       setStage("result");
     }, 900);
     return () => clearTimeout(t);
-  }, [stage, revealed, user]);
+  }, [stage, revealed, user, cards.length]);
 
   function restart() { setPicked([]); setCards([]); setRevealed(0); setFlipMode(false); setWheelRevealed(0); setFaces({}); setStage("spin"); }
 
@@ -375,7 +378,11 @@ export default function ReadingFlow() {
                     className="glass w-full rounded-full px-5 py-3.5 text-center text-sm text-white placeholder:text-white/35 outline-none focus:ring-1 focus:ring-gold/60"
                   />
                 </label>
-                <p className="text-sm text-white/55">Choose exactly 5 cards from the deck after the spin.</p>
+                <p className="text-sm text-white/55">
+                  {creditsUnlimited
+                    ? <>Your <b className="text-gold-soft">Pro 10-card spread</b> — pick {target} cards from the deck for double the insight. 🔥</>
+                    : <>Choose exactly 5 cards from the deck after the spin.</>}
+                </p>
               </>
             ) : (
               <ChallengePanel />
@@ -393,10 +400,10 @@ export default function ReadingFlow() {
             <div className="relative mt-2 w-full">
               {/* left info panel */}
               <div className="glass pointer-events-none absolute left-2 top-8 z-30 hidden w-48 rounded-2xl border border-gold/30 p-5 lg:block">
-                <p className="font-display text-xl text-gold-soft">Select 5 Cards</p>
-                <p className="mt-2 text-lg" aria-live="polite"><b className="text-gold">{picked.length}</b> <span className="text-white/60">/ 5 Selected</span></p>
-                <div className="mt-3 flex gap-2">
-                  {Array.from({ length: 5 }).map((_, d) => (
+                <p className="font-display text-xl text-gold-soft">{target === 10 ? "Select 10 Cards — Pro 🔥" : "Select 5 Cards"}</p>
+                <p className="mt-2 text-lg" aria-live="polite"><b className="text-gold">{picked.length}</b> <span className="text-white/60">/ {target} Selected</span></p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {Array.from({ length: target }).map((_, d) => (
                     <span key={d} className={`h-3.5 w-3.5 rounded-full border transition-all duration-300 ${d < picked.length ? "border-gold bg-gold shadow-[0_0_10px_rgba(232,194,106,0.9)]" : "border-white/30"}`} />
                   ))}
                 </div>
@@ -412,17 +419,17 @@ export default function ReadingFlow() {
             </div>
 
             {/* mobile counter */}
-            <p className="text-white/70 lg:hidden" aria-live="polite">Selected: <b className="text-gold">{picked.length} / 5</b></p>
+            <p className="text-white/70 lg:hidden" aria-live="polite">Selected: <b className="text-gold">{picked.length} / {target}</b></p>
 
             <div className="mt-3 flex min-h-[60px] flex-col items-center justify-center gap-3">
               <AnimatePresence mode="wait">
-                {picked.length === 5 && !flipMode ? (
+                {picked.length >= target && !flipMode ? (
                   <motion.p key="consult" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2 text-sm text-gold-soft" aria-live="polite">
                     <Loader2 className="h-4 w-4 animate-spin" /> Consulting the cosmos — your cards are turning face-up…
                   </motion.p>
                 ) : (
                   <motion.p key="hint" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm text-white/50">
-                    Tap a card to choose it — <b className="text-gold">{5 - picked.length}</b> more to go
+                    Tap a card to choose it — <b className="text-gold">{Math.max(0, target - picked.length)}</b> more to go
                   </motion.p>
                 )}
               </AnimatePresence>
