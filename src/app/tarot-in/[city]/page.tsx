@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FAQS, BLOG, CITIES } from "@/data/seo";
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   if (!c) return { title: "City not found" };
   const country = c.region.split(",").pop()?.trim() ?? "";
   const isIndia = country.includes("India");
-  const priceLine = isIndia ? "3 free readings daily, then Γé╣90 ($1) per reading or Γé╣4,500 ($50) for 100 credits" : "3 free readings daily, then $1 per reading or $50 for 100 credits";
+  const priceLine = isIndia ? "Readings free and unlimited. A formatted PDF of any reading: Rs90 ($1), or Rs4,500 ($50) for 100 PDF credits" : "Readings free and unlimited, every day. The only paid option: a $1 formatted PDF of your reading, or $50 for 100 PDF credits";
   return {
     title: { absolute: `Tarot Card Reading in ${c.name} ΓÇö Online, Free to Start, 78-Card Deck` },
     description: `Looking for a tarot card reading in ${c.name}? MysticTarot runs the full 78-card RiderΓÇôWaite deck online ΓÇö no appointment, private, ${priceLine}.`,
@@ -32,9 +32,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   const nearby = others.length ? others : CITIES.filter((x) => x.slug !== c.slug).slice(0, 8);
   const seeded = [...TAROT_DECK.slice(Number(c.name.length) % 22), ...TAROT_DECK].slice(0, 3);
   const faqs: { q: string; a: string }[] = [
-    { q: `Is there a tarot reader available in ${c.name} right now?`, a: `Yes ΓÇö MysticTarot is always available in ${c.name} because the reading is online: shuffle the 78-card deck and get your 5-card spread in minutes, at any hour, 3 free readings daily.` },
-    { q: `How much does a tarot reading cost in ${c.name}?`, a: `Nothing to start: your 3 free readings every day. After that it's $1 per reading (Γëê Γé╣90 for India) or $50 for 100 credits ΓÇö far less than the Γé╣2,000ΓÇôΓé╣10,000 typical of in-person readers.` },
-    { q: `Can I get a same-day tarot reading in ${c.name}?`, a: `Same-minute, actually. No booking, no travel: create a free account, spin the deck, choose 5 cards and the full interpretation appears on screen. Your reading history is saved for you.` },
+    { q: `Is there a tarot reader available in ${c.name} right now?`, a: `Yes ΓÇö MysticTarot is always available in ${c.name} because the reading is online: shuffle the 78-card deck and get your 10-card deep spread in minutes, at any hour, free and unlimited.` },
+    { q: `How much does a tarot reading cost in ${c.name}?`, a: `Nothing to start: readings are free and unlimited. The only paid extra is a $1 formatted PDF download of your reading - still far less than the Rs2,000-Rs10,000 typical of in-person readers.` },
+    { q: `Can I get a same-day tarot reading in ${c.name}?`, a: `Same-minute, actually. No booking, no travel: create a free account, spin the deck, choose 10 cards and the full interpretation appears on screen. Your reading history is saved for you.` },
     { q: `Are online readings real tarot?`, a: "The deck is the full 78-card RiderΓÇôWaite system with upright and reversed orientations, drawn brightly and randomly. What changes vs in-person is only who interprets ΓÇö here it's position-aware interpretation, not cold reading." },
   ];
   return (
@@ -43,16 +43,15 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       <JsonLd data={faqSchema(faqs)} />
       <nav aria-label="Breadcrumb" className="mb-4 text-xs text-white/50"><Link href="/" className="hover:text-gold">Home</Link> ΓÇ║ <Link href="/tarot-reading-near-me" className="hover:text-gold">Tarot Near Me</Link> ΓÇ║ <span className="text-gold/80">{c.name}</span></nav>
       <h1 className="font-display text-4xl sm:text-5xl text-gold-soft">Tarot Card Reading in {c.name}</h1>
-      <p className="mt-3 text-white/70">{c.region} ┬╖ Online ┬╖ 78-card RiderΓÇôWaite deck ┬╖ 3 free readings daily</p>
-      <p className="mt-6 text-white/75">If you've been typing "tarot card reading near me" into {c.name} search bars, this is the shortcut: no traffic to sit through in {c.region}'s busiest stretches, no appointment to chase, no fee to preview. Spin the deck right now ΓÇö the shuffle, the 5-card spread and the full interpretation happen in the next few minutes, free three times every day.</p>
+      <p className="mt-3 text-white/70">{c.region} ┬╖ Online ┬╖ 78-card RiderΓÇôWaite deck ┬╖ readings free, unlimited</p>
+      <p className="mt-6 text-white/75">If you've been typing "tarot card reading near me" into {c.name} search bars, this is the shortcut: no traffic to sit through in {c.region}'s busiest stretches, no appointment to chase, no fee to preview. Spin the deck right now ΓÇö the shuffle, the 10-card deep spread and the full interpretation happen in the next few minutes, free, every day.</p>
       <div className="mt-6 flex flex-wrap gap-3">
         <Link href="/reading" className="btn-glow rounded-full px-8 py-3">Start free reading</Link>
         <Link href="/yes-or-no" className="btn-ghost rounded-full px-8 py-3">Quick yes/no pull</Link>
       </div>
 
       <section className="mt-10 grid gap-6 sm:grid-cols-2">
-        <div className="glass rounded-3xl p-6"><h2 className="font-display text-2xl text-gold-soft">What a reading covers</h2><p className="mt-2 text-sm text-white/70">Five positions ΓÇö Past, Present, Hidden Influence, Advice, Outcome ΓÇö each randomly drawn from all 78 cards, upright or reversed, interpreted for love, career, money and the spiritual frame.</p></div>
-        <div className="glass rounded-3xl p-6"><h2 className="font-display text-2xl text-gold-soft">Pricing for {c.name}</h2><p className="mt-2 text-sm text-white/70">Free twice with a free account, then $1 per reading ΓÇö or $50 for 100 credits at $0.50 each. Paid securely via PayPal. No subscription, no per-minute meter.</p></div>
+        <div className="glass rounded-3xl p-6"><h2 className="font-display text-2xl text-gold-soft">What a reading covers</h2><p className="mt-2 text-sm text-white/70">Ten positions â€” Past, Present, Hidden Influence, Advice, Outcome, then five deep positions (Supports, Challenge, Outside Forces, Next Move, Final Word) â€” each randomly drawn from all 78 cards, upright or reversed.</p></div>
       </section>
 
       <section className="mt-10">

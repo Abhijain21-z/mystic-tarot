@@ -2,15 +2,15 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useAnimationFrame, useMotionValue } from "framer-motion";
-import { RotateCcw, Loader2, Sparkles, UserPlus, Flame, ArrowRight, ArrowLeft, Heart, Briefcase, Coins, Home, Rocket, Wind, Handshake, CircleDot } from "lucide-react";
+import { RotateCcw, Loader2, Sparkles, UserPlus, ArrowRight, ArrowLeft, Heart, Briefcase, Coins, Home, Rocket, Wind, Handshake, CircleDot } from "lucide-react";
 import { CardBack, TarotImage, CARD_BACK_SRC } from "../TarotCardFace";
 import CardWheel from "./CardWheel";
 import ReadingResult from "./ReadingResult";
-import PaymentModal from "../PaymentModal";
+import BuyButton from "../BuyButton";
 import { MysticReader } from "../MysticPersona";
 import { useApp } from "../Providers";
 import { readingFromPicks } from "@/lib/reading-local";
-import { DAILY_FREE_LIMIT, dailyInfo, recordDailyReading, type DailyInfo } from "@/lib/daily-quota";
+import { openReadingPdf } from "@/lib/reading-pdf";
 import { STREAMS, getStream, type Stream } from "@/lib/streams";
 import type { ReadingCard } from "@/lib/interpret";
 
@@ -58,7 +58,7 @@ function StreamDashboard({ onChoose }: { onChoose: (id: string) => void }) {
         Pick Your <span className="text-gradient-gold italic">Life Stream</span>
       </h2>
       <p className="mx-auto mt-3 max-w-2xl text-center text-white/70">
-        One destiny, many doors. Choose the field you want the cards to open — every stream is its own full 5-card reading, free {DAILY_FREE_LIMIT} times a day.
+        One destiny, many doors. Choose the field you want the cards to open — every stream is its own full 10-card deep reading, free forever.
       </p>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {STREAMS.map((s) => {
@@ -74,52 +74,53 @@ function StreamDashboard({ onChoose }: { onChoose: (id: string) => void }) {
               </span>
               <span className="font-display text-xl leading-tight text-gold-soft group-hover:text-gold">{s.tileTitle}</span>
               <span className="text-sm leading-snug text-white/60">{s.tileDesc}</span>
-              <span className="mt-1 inline-flex items-center gap-1 text-xs text-gold/80">5 cards · <b className="text-gold">free</b> <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></span>
+              <span className="mt-1 inline-flex items-center gap-1 text-xs text-gold/80">10-card deep spread · <b className="text-gold">free</b> <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></span>
             </button>
           );
         })}
       </div>
-      <p className="mt-6 text-center text-xs text-white/40">3 free readings every day — mix streams or go deep on one. Only the brave go Pro. 🔥</p>
+      <p className="mt-6 text-center text-xs text-white/40">All readings free, unlimited, every day — a beautifully formatted PDF of any reading is just $1. 📜</p>
     </div>
   );
 }
 
-/* ─── today's free-quota / credits line shown above every stage except result ─── */
-function QuotaLine({ user, daily }: { user: { credits: number } | null; daily: DailyInfo | null }) {
-  const credits = user?.credits ?? 0;
-  const used = daily?.used ?? 0;
-  if (credits > 0) {
-    return <>Today: <b className="text-gold">{used}/{DAILY_FREE_LIMIT}</b> free readings used · Credits: <b className="text-gold">{credits}</b></>;
-  }
-  return <>Today&apos;s free readings: <b className="text-gold">{Math.max(0, DAILY_FREE_LIMIT - used)}/{DAILY_FREE_LIMIT}</b> left — credits unlock more.</>;
-}
-
-/* ─── "Only the brave go Pro" — challenge upsell shown when the daily free quota is over ─── */
-function ChallengePanel({ compact = false }: { compact?: boolean }) {
-  return (
-    <div className={`glass relative overflow-hidden text-center ${compact ? "rounded-3xl p-6" : "max-w-xl rounded-[2rem] p-8 sm:p-10"}`}>
-      <span aria-hidden className="pointer-events-none absolute -top-20 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-magenta/30 blur-3xl" />
-      <p aria-hidden className="text-4xl">🔥</p>
-      <h2 className="mt-2 font-display text-3xl sm:text-4xl">
-        Only the <span className="text-gradient-gold italic">brave</span> go Pro.
-      </h2>
-      <p className="mx-auto mt-3 max-w-md text-white/75">
-        You&apos;ve used today&apos;s {DAILY_FREE_LIMIT} free readings. <b className="text-gold">The brave don&apos;t wait for tomorrow</b> — they take the answer now.
-        <br />
-        <span className="text-gold-soft">Are you brave enough, or shall the cards wait?</span>
-      </p>
-      <ul className="mx-auto mt-5 max-w-sm space-y-2 text-left text-sm text-white/70">
-        <li className="flex items-center gap-2"><span aria-hidden>✦</span>Unlimited readings — no daily cap</li>
-        <li className="flex items-center gap-2"><span aria-hidden>✦</span><b className="text-gold-soft">10-card deep spreads</b> — pick twice the cards, twice the insight 🔥</li>
-        <li className="flex items-center gap-2"><span aria-hidden>✦</span>Every position, every card, every detail unlocked</li>
-        <li className="flex items-center gap-2"><span aria-hidden>✦</span>From 50¢ per reading ($50 = 100 credits)</li>
-      </ul>
-      <div className="mt-6 flex flex-col items-center gap-3">
-        <Link href="/pricing" className="btn-glow inline-flex items-center gap-2 rounded-full px-8 py-4">
-          <Flame className="h-5 w-5" /> Take the challenge — Unlock Pro <ArrowRight className="h-4 w-4" />
-        </Link>
-        <p className="text-xs text-white/45">Not today? Fair — {DAILY_FREE_LIMIT} free readings reset tomorrow. 😌</p>
+/* ─── $1 PDF download panel shown on the result screen.
+       Unlocked for members with credits (1 credit = 1 PDF download);
+       otherwise it promotes the $1 one-click unlock. ─── */
+function PdfPanel({ cards, streamLabel, question, unlocked }: { cards: ReadingCard[]; streamLabel: string; question: string; unlocked: boolean }) {
+  if (!unlocked) {
+    return (
+      <div className="glass relative mx-auto mt-8 max-w-xl overflow-hidden rounded-[2rem] p-8 text-center">
+        <span aria-hidden className="pointer-events-none absolute -top-20 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-gold/25 blur-3xl" />
+        <p aria-hidden className="text-4xl">📜</p>
+        <h2 className="mt-2 font-display text-3xl">Keep this reading <span className="text-gradient-gold italic">forever</span></h2>
+        <p className="mx-auto mt-3 max-w-md text-white/75">
+          A beautifully formatted PDF of your full reading — every card, every position, every insight — for just <b className="text-gold">$1</b>. Print it, save it, revisit it anytime.
+        </p>
+        <div className="mt-6">
+          <BuyButton pack="single" className="btn-glow inline-flex items-center gap-2 rounded-full px-8 py-4">
+            📜 Get My PDF — $1
+          </BuyButton>
+        </div>
+        <p className="mt-4 text-xs text-white/45">Secure PayPal checkout · Instant unlock · <Link href="/login?next=/reading" className="underline decoration-gold/50 underline-offset-2 hover:text-gold">free account required</Link></p>
       </div>
+    );
+  }
+  return (
+    <div className="glass relative mx-auto mt-8 max-w-xl overflow-hidden rounded-[2rem] p-8 text-center">
+      <span aria-hidden className="pointer-events-none absolute -top-20 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-gold/25 blur-3xl" />
+      <p aria-hidden className="text-4xl">📜</p>
+      <h2 className="mt-2 font-display text-3xl">Your PDF is <span className="text-gradient-gold italic">ready</span></h2>
+      <p className="mx-auto mt-3 max-w-md text-white/75">
+        Download this reading as a beautifully formatted keepsake — ready to print or save.
+      </p>
+      <button
+        onClick={() => { openReadingPdf(cards, streamLabel, question); }}
+        className="btn-glow mt-6 inline-flex items-center gap-2 rounded-full px-8 py-4"
+      >
+        ⬇ Download PDF — included with your credit
+      </button>
+      <p className="mt-4 text-xs text-white/45">Parchment-styled report · card artwork · every position &amp; insight</p>
     </div>
   );
 }
@@ -222,22 +223,15 @@ export default function ReadingFlow() {
   const [flipMode, setFlipMode] = useState(false);
   const [wheelRevealed, setWheelRevealed] = useState(0);
   const [faces, setFaces] = useState<Record<number, { image: string; name: string }>>({});
-  const [showSignup, setShowSignup] = useState(false);
   const [question, setQuestion] = useState("");
   const [streamId, setStreamId] = useState("final");
-  const [daily, setDaily] = useState<DailyInfo | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
   const stream: Stream = getStream(streamId);
 
-  /* Daily free quota lives client-side (3/day); paid credits always bypass it.
-     Pro perk: credits members pick 10 cards (deep spread) — free members pick 5. */
-  useEffect(() => { setDaily(dailyInfo()); }, []);
-  const creditsUnlimited = !!user && user.credits > 0;
-  const target = creditsUnlimited ? 10 : 5;
-  const quotaLeft = daily ? daily.remaining > 0 : true; // optimistically allow render; gate shown once quota loads
-  const canRead = creditsUnlimited || quotaLeft;
-  const dailyUsed = daily?.used ?? 0;
+  /* Everything is free: every visitor picks 10 cards for the deep spread.
+     Monetization is the optional $1 PDF download on the result screen. */
+  const target = 10;
 
   useEffect(() => { topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [stage]);
 
@@ -283,7 +277,7 @@ export default function ReadingFlow() {
   function reveal(picks: number[] = picked) {
     if (picks.length < 5 || loading) return;
     setLoading(true);
-    // No server needed: build the reading instantly from the user's 5 picks.
+    // No server needed: build the reading instantly from the user's picks.
     window.setTimeout(() => {
       try {
         const drawn = readingFromPicks(picks, streamId);
@@ -292,8 +286,6 @@ export default function ReadingFlow() {
         setFaces(f);
         setCards(drawn); setSaved(false);
         setWheelRevealed(0); setFlipMode(true);
-        // Consume one slot of today's free quota (credits bypass this).
-        if (!creditsUnlimited) setDaily(recordDailyReading());
         refresh();
       } finally { setLoading(false); }
     }, 700);
@@ -316,17 +308,13 @@ export default function ReadingFlow() {
     return () => clearTimeout(t);
   }, [stage, revealed, cards.length]);
 
-  /* Zero clicks after the final card: members go straight to the result;
-     guests get the (free) signup gate popped automatically, no button needed. */
+  /* Zero clicks after the final card: everyone — member or guest — goes straight
+     to the full result. The reading is free; the PDF is the only paid step. */
   useEffect(() => {
     if (stage !== "reveal" || revealed < cards.length) return;
-    const t = setTimeout(() => {
-      emitSound("reveal");
-      if (!user) { setShowSignup(true); return; }
-      setStage("result");
-    }, 900);
+    const t = setTimeout(() => { emitSound("reveal"); setStage("result"); }, 900);
     return () => clearTimeout(t);
-  }, [stage, revealed, user, cards.length]);
+  }, [stage, revealed, cards.length]);
 
   function restart() { setPicked([]); setCards([]); setRevealed(0); setFlipMode(false); setWheelRevealed(0); setFaces({}); setStage("spin"); }
 
@@ -342,9 +330,9 @@ export default function ReadingFlow() {
           </button>
         )}
       </div>
-      {loaded && stage !== "result" && (
+      {loaded && stage !== "result" && stage !== "stream" && (
         <p className="mb-4 text-center text-sm text-white/60" aria-live="polite">
-          <QuotaLine user={user} daily={daily} />
+          All readings are free — unlimited, every day 🔓
         </p>
       )}
 
@@ -362,31 +350,25 @@ export default function ReadingFlow() {
               <StreamChips current={streamId} onSwitch={switchStream} />
             </div>
             <h2 className="text-center font-display text-4xl">Spin the Mystical Deck</h2>
-            {canRead ? (
-              <>
-                <Orbit spinning={spinning} onClick={spin} />
-                <button onClick={spin} disabled={spinning} className="btn-glow inline-flex items-center gap-2 rounded-full px-10 py-4">
-                  {spinning ? <><Loader2 className="h-4 w-4 animate-spin" />Shuffling the cosmos…</> : <><Sparkles className="h-4 w-4" />Spin the Tarot Deck</>}
-                </button>
-                <label className="w-full max-w-xl text-center">
-                  <span className="mb-1.5 block text-xs uppercase tracking-widest text-gold/70">Your question (optional)</span>
-                  <input
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    maxLength={140}
-                    placeholder={stream.questionHint}
-                    className="glass w-full rounded-full px-5 py-3.5 text-center text-sm text-white placeholder:text-white/35 outline-none focus:ring-1 focus:ring-gold/60"
-                  />
-                </label>
-                <p className="text-sm text-white/55">
-                  {creditsUnlimited
-                    ? <>Your <b className="text-gold-soft">Pro 10-card spread</b> — pick {target} cards from the deck for double the insight. 🔥</>
-                    : <>Choose exactly 5 cards from the deck after the spin.</>}
-                </p>
-              </>
-            ) : (
-              <ChallengePanel />
-            )}
+            <>
+              <Orbit spinning={spinning} onClick={spin} />
+              <button onClick={spin} disabled={spinning} className="btn-glow inline-flex items-center gap-2 rounded-full px-10 py-4">
+                {spinning ? <><Loader2 className="h-4 w-4 animate-spin" />Shuffling the cosmos…</> : <><Sparkles className="h-4 w-4" />Spin the Tarot Deck</>}
+              </button>
+              <label className="w-full max-w-xl text-center">
+                <span className="mb-1.5 block text-xs uppercase tracking-widest text-gold/70">Your question (optional)</span>
+                <input
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  maxLength={140}
+                  placeholder={stream.questionHint}
+                  className="glass w-full rounded-full px-5 py-3.5 text-center text-sm text-white placeholder:text-white/35 outline-none focus:ring-1 focus:ring-gold/60"
+                />
+              </label>
+              <p className="text-sm text-white/55">
+                Your <b className="text-gold-soft">10-card deep spread</b> — pick {target} cards from the deck for the full story. 🔮
+              </p>
+            </>
           </motion.section>
         )}
 
@@ -395,12 +377,12 @@ export default function ReadingFlow() {
             <p className="mb-2 text-center text-xs uppercase tracking-widest text-gold/70">You are choosing these cards for</p>
             <StreamChips current={streamId} onSwitch={switchStream} />
             <h2 className="mt-4 text-center font-display text-4xl sm:text-5xl"><span className="text-gradient-gold">Choose Your Tarot Cards</span></h2>
-            <p className="mx-auto mt-3 max-w-xl text-center text-white/70">Focus on your <b className="text-gold-soft">{stream.label}</b> question, then scroll or swipe the wheel and pick 5 cards that feel right.</p>
+            <p className="mx-auto mt-3 max-w-xl text-center text-white/70">Focus on your <b className="text-gold-soft">{stream.label}</b> question, then scroll or swipe the wheel and pick 10 cards that feel right.</p>
 
             <div className="relative mt-2 w-full">
               {/* left info panel */}
               <div className="glass pointer-events-none absolute left-2 top-8 z-30 hidden w-48 rounded-2xl border border-gold/30 p-5 lg:block">
-                <p className="font-display text-xl text-gold-soft">{target === 10 ? "Select 10 Cards — Pro 🔥" : "Select 5 Cards"}</p>
+                <p className="font-display text-xl text-gold-soft">Select {target} Cards</p>
                 <p className="mt-2 text-lg" aria-live="polite"><b className="text-gold">{picked.length}</b> <span className="text-white/60">/ {target} Selected</span></p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {Array.from({ length: target }).map((_, d) => (
@@ -436,11 +418,6 @@ export default function ReadingFlow() {
               {picked.length > 0 && !flipMode && (
                 <button onClick={() => setPicked([])} disabled={loading} className="btn-ghost inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm"><RotateCcw className="h-4 w-4" />Choose Again</button>
               )}
-              {daily && !canRead && (
-                <p className="text-center text-sm text-gold-soft">
-                  <Flame className="mr-1 inline h-4 w-4" />Daily limit done — <Link href="/pricing" className="underline decoration-gold/60 underline-offset-2 hover:text-gold">only the brave go Pro</Link>.
-                </p>
-              )}
             </div>
           </motion.section>
         )}
@@ -452,9 +429,9 @@ export default function ReadingFlow() {
               {cards.map((c, i) => <FlipCard key={c.cardId} card={c} index={i} show={revealed > i} />)}
             </div>
             <AnimatePresence>
-              {revealed >= 5 && (
+              {revealed >= cards.length && (
                 <motion.div key="gate-note" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="sr-only" aria-live="polite">
-                  {user ? "Opening your full prediction…" : "One free profile away — opening the gate…"}
+                  Opening your full prediction…
                 </motion.div>
               )}
             </AnimatePresence>
@@ -482,11 +459,7 @@ export default function ReadingFlow() {
               </div>
             )}
             <div className="mt-8"><ReadingResult cards={cards} primaryLens={stream.primaryLens} /></div>
-            {dailyUsed >= DAILY_FREE_LIMIT && !creditsUnlimited && (
-              <div className="mt-8">
-                <ChallengePanel compact />
-              </div>
-            )}
+            <PdfPanel cards={cards} streamLabel={stream.label} question={question} unlocked={!!user && user.credits > 0} />
             <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <button onClick={restart} className="btn-glow rounded-full px-8 py-3">New Reading</button>
               {user && <Link href="/history" className="btn-ghost rounded-full px-8 py-3">View History</Link>}
@@ -503,7 +476,6 @@ export default function ReadingFlow() {
           </div>
         </div>
       )}
-      <PaymentModal open={showSignup} mode="login" onClose={() => setShowSignup(false)} />
     </div>
   );
 }

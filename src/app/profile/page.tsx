@@ -34,7 +34,7 @@ export default function Page() {
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <div className="glass rounded-3xl p-6">
           <h2 className="font-display text-2xl">Add credits</h2>
-          <p className="mb-4 text-sm text-white/60">1 reading = 1 credit · USD</p>
+          <p className="mb-4 text-sm text-white/60">1 credit = 1 PDF download · USD</p>
           <div className="grid gap-3 sm:grid-cols-2"><BuyButton pack="single" className="btn-ghost">1 Credit — $1</BuyButton><BuyButton pack="pack500" className="btn-glow">100 Credits — $50</BuyButton></div>
         </div>
         <div className="glass flex flex-col gap-3 rounded-3xl p-6">

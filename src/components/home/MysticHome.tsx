@@ -178,7 +178,7 @@ function WelcomePopup({ open, onClose }: { open: boolean; onClose: () => void })
                 Maybe later
               </button>
             </div>
-            <p className="mt-4 text-xs text-white/40">3 free readings every day · 5-card spreads free · <b className="text-gold-soft">Pro unlocks 10-card deep readings</b> 🔥</p>
+            <p className="mt-4 text-xs text-white/40">Readings free forever · unlimited · 10-card deep spreads · PDF report $1</p>
           </motion.div>
         </motion.div>
       )}
@@ -212,7 +212,7 @@ export default function MysticHome() {
     { I: Layers, t: "Spin the Cards", d: "Get 5 random tarot cards" },
     { I: Hand, t: "Select 5 Cards", d: "Choose the cards you feel drawn to" },
     { I: ScrollText, t: "Get Your Reading", d: "Receive detailed predictions" },
-    { I: UserRound, t: "Create Account", d: "3 free readings daily, pay beyond that" },
+    { I: UserRound, t: "Create Account", d: "Save readings to your history — accounts are free" },
   ];
   const feats = [
     { I: Orbit, t: "Real Tarot Cards", d: "Authentic 78-card deck design" },
@@ -249,7 +249,7 @@ export default function MysticHome() {
               Free Tarot<br /><span className="text-gradient-gold">Card Reading</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-4 text-lg text-white/85">
-              <b className="text-gold-soft">Free tarot card reading prediction</b> — let the cards reveal insights for love, career, money, health and life, from the full 78-card deck. 3 free readings every day.
+              <b className="text-gold-soft">Free tarot card reading prediction</b> — let the cards reveal insights for love, career, money, health and life, from the full 78-card deck. Free, unlimited, every day.
             </motion.p>
             <div className="mt-6 flex justify-center gap-6 lg:justify-start">
               {areas.map(({ I, l }, i) => (
@@ -278,7 +278,7 @@ export default function MysticHome() {
           <motion.aside initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="order-3 mx-auto w-full max-w-xs rounded-xl border border-gold/60 bg-black/50 p-6 backdrop-blur-md">
             <h2 className="text-center font-display text-2xl leading-tight text-gold-soft">Accurate<br />Tarot Readings</h2>
             <ul className="mt-4 space-y-2.5 text-sm text-white/85">
-              {["Get personalized insights", "Simple & easy process", "3 free readings every day", "Complete 78-card deck"].map((t) => (
+              {["Get personalized insights", "Simple & easy process", "Free readings, unlimited", "Complete 78-card deck"].map((t) => (
                 <li key={t} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-gold" />{t}</li>
               ))}
             </ul>
@@ -297,7 +297,7 @@ export default function MysticHome() {
             </motion.button>
             <span className="text-gold">✦</span>
           </div>
-          <p className="mt-3 text-sm text-white/70">Tap to reveal your 5-card prediction</p>
+          <p className="mt-3 text-sm text-white/70">Tap to reveal your 10-card prediction</p>
         </div>
       </section>
 

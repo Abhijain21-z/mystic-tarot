@@ -55,7 +55,7 @@ export default function QuizCalculator() {
                 </div>
               </div>
             )}
-            <p className="text-center text-sm"><Link href="/reading" className="text-gold hover:underline">Pull a free 5-card reading →</Link></p>
+            <p className="text-center text-sm"><Link href="/reading" className="text-gold hover:underline">Pull a free 10-card reading →</Link></p>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {ZODIAC.map((zz) => (
                 <Link key={zz.sign} href={`/zodiac/${zz.sign.toLowerCase()}`} className="glass rounded-xl p-2 text-center text-xs text-white/70 hover:text-gold">{zz.sign}</Link>

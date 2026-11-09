@@ -8,14 +8,14 @@ import { ZODIAC } from "@/data/seo";
 
 export const metadata: Metadata = {
   title: { absolute: "Free Tarot Card Reading for Love, Career & Money — MysticTarot" },
-  description: "Free tarot card reading to predict your love life, career, money, family, business and emotions. Dedicated 5-card spreads per life stream from the full 78-card Rider–Waite deck — 3 free readings every day.",
+  description: "Free tarot card reading to predict your love life, career, money, family, business and emotions. Dedicated 10-card deep spreads per life stream from the full 78-card Rider–Waite deck — free, unlimited, every day.",
   alternates: { canonical: "/" },
 };
 
 const HOME_FAQS = [
-  { q: "What is the best free tarot card reading online?", a: "MysticTarot gives a full 5-card spread — Past, Present, Hidden, Advice, Outcome — from the complete 78-card Rider–Waite deck, free 3 times every day, no card details required." },
+  { q: "What is the best free tarot card reading online?", a: "MysticTarot gives a full 10-card deep spread — Past, Present, Hidden, Advice, Outcome plus five deep positions — from the complete 78-card Rider–Waite deck, free and unlimited, no card details required." },
   { q: "How accurate is an online tarot card reading?", a: "A reading is accurate when it reflects things you already half-know. Ours grounds every card in position and orientation, so the interpretation stays specific — never just fate theatre." },
-  { q: "Can I get a tarot reading near me without visiting a reader?", a: "Yes — MysticTarot is fully online: an instant 5-card reading from any city, on demand, private, cheaper than an in-person session." },
+  { q: "Can I get a tarot reading near me without visiting a reader?", a: "Yes — MysticTarot is fully online: an instant 10-card reading from any city, on demand, private, cheaper than an in-person session." },
   { q: "Can tarot cards answer yes or no questions?", a: "They can: our free Yes/No tool deals one card with an upright/reversed verdict and the reason behind it." },
   { q: "What tarot card matches my zodiac sign?", a: "Aries pairs with The Emperor through Pisces with The Moon — see the zodiac guide or enter your birthday in the calculator for both your sign card and a personal-year card." },
 ];

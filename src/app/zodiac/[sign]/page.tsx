@@ -57,7 +57,7 @@ export default async function ZodiacPage({ params }: { params: Promise<{ sign: s
       </section>
       <div className="mt-10 flex flex-wrap justify-center gap-3 text-sm">
         <Link href={cardUrl(z.cardId)} className="btn-glow rounded-full px-6 py-2.5">Full {spoken} page →</Link>
-        <Link href="/reading" className="btn-ghost rounded-full px-6 py-2.5">Free 5-card reading</Link>
+        <Link href="/reading" className="btn-ghost rounded-full px-6 py-2.5">Free 10-card tarot reading</Link>
       </div>
       <nav className="mt-8 flex justify-between text-sm text-white/60">
         <Link href="/zodiac" className="hover:text-gold">← All zodiac cards</Link>

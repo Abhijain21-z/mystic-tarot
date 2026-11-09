@@ -13,9 +13,9 @@ export default function PaymentModal({ open, mode, onClose }: { open: boolean; m
             <button onClick={onClose} aria-label="Close" className="absolute right-4 top-4 text-white/60 hover:text-white"><X /></button>
             {mode === "login" ? (
               <>
-                <h2 id="pm-title" className="font-display text-3xl">Unlock Your Full Prediction</h2>
-                <p className="mt-2 text-white/70">Your cards are revealed! Create a free profile to read your full personalized prediction, save it to your history, and get 3 free readings every day.</p>
-                <p className="mt-2 rounded-xl border border-gold/30 bg-gold/5 px-3 py-2 text-xs text-gold-soft">🔥 Pro perk: credits members pick <b>10 cards</b> per reading — a deep spread with twice the standard insight.</p>
+                <h2 id="pm-title" className="font-display text-3xl">Save This Reading</h2>
+                <p className="mt-2 text-white/70">Your reading is completely free! Create a free profile to read your full personalized prediction and save it to your history.</p>
+                <p className="mt-2 rounded-xl border border-gold/30 bg-gold/5 px-3 py-2 text-xs text-gold-soft">📜 Want a keepsake? Any reading can be downloaded as a formatted PDF for just <b>$1</b>.</p>
                 <div className="mt-6 flex flex-col gap-3">
                   <Link href="/login?mode=register&next=/reading" className="btn-glow rounded-full px-6 py-3 text-center">Create Profile</Link>
                   <Link href="/login?next=/reading" className="btn-ghost rounded-full px-6 py-3 text-center">I already have an account</Link>
@@ -23,16 +23,16 @@ export default function PaymentModal({ open, mode, onClose }: { open: boolean; m
               </>
             ) : (
               <>
-                <h2 id="pm-title" className="font-display text-3xl">Continue Your Journey</h2>
-                <p className="mt-2 text-white/70">You have no free readings or credits left. <strong className="text-gold-soft">1 reading = 1 credit — and every credit reading is a <b>10-card deep spread</b></strong> 🔥</p>
+                <h2 id="pm-title" className="font-display text-3xl">Unlock Your PDF Download</h2>
+                <p className="mt-2 text-white/70">Your reading is free forever — this purchase adds a <strong className="text-gold-soft">formatted PDF download</strong>. <b>1 credit = 1 PDF download</b>.</p>
                 <div className="mt-6 space-y-3">
                   <div className="rounded-2xl border border-white/10 p-4">
-                    <div className="mb-3 flex justify-between"><span>1 credit</span><span className="font-semibold text-gold">$1.00 USD</span></div>
-                    <BuyButton pack="single" className="btn-ghost">Pay $1 for 1 Reading</BuyButton>
+                    <div className="mb-3 flex justify-between"><span>1 PDF credit</span><span className="font-semibold text-gold">$1.00 USD</span></div>
+                    <BuyButton pack="single" className="btn-ghost">Get 1 PDF Credit — $1</BuyButton>
                   </div>
                   <div className="rounded-2xl border border-gold/40 bg-gold/5 p-4">
-                    <div className="mb-3 flex justify-between"><span>100 credits <span className="text-xs text-gold">best value</span></span><span className="font-semibold text-gold">$50.00 USD</span></div>
-                    <BuyButton pack="pack500" className="btn-glow">Buy 100 Credits</BuyButton>
+                    <div className="mb-3 flex justify-between"><span>100 PDF credits <span className="text-xs text-gold">best value</span></span><span className="font-semibold text-gold">$50.00 USD</span></div>
+                    <BuyButton pack="pack500" className="btn-glow">Buy 100 PDF Credits</BuyButton>
                   </div>
                 </div>
                 <p className="mt-4 flex items-center justify-center gap-1 text-xs text-white/50"><Lock className="h-3 w-3" />Secure checkout by PayPal. One-time charge, no subscription.</p>

@@ -17,7 +17,7 @@ export default function Page() {
       <h1 className="text-center font-display text-5xl">Tarot <span className="text-gradient-gold">Questions</span>, Answered</h1>
       <p className="mx-auto mt-3 max-w-xl text-center text-white/60">The 24 questions people ask before their first spread — belief, accuracy, money, storage, gifting — answered plainly and honestly.</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3 text-sm">
-        <Link href="/reading" className="btn-glow rounded-full px-6 py-2.5">Free 5-card reading</Link>
+        <Link href="/reading" className="btn-glow rounded-full px-6 py-2.5">Free 10-card reading</Link>
         <Link href="/yes-or-no" className="btn-ghost rounded-full px-6 py-2.5">Yes/No pull</Link>
         <Link href="/quiz" className="btn-ghost rounded-full px-6 py-2.5">Birthday quiz</Link>
       </div>

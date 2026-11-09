@@ -33,7 +33,7 @@ export default function Page() {
           );
         })}
       </div>
-      <p className="mt-10 text-center text-sm text-white/60">Prefer your own cards over your sign? Try the <Link href="/reading" className="text-gold hover:underline">free 5-card reading</Link> or the <Link href="/quiz" className="text-gold hover:underline">birthday calculator</Link>.</p>
+      <p className="mt-10 text-center text-sm text-white/60">Prefer your own cards over your sign? Try the <Link href="/reading" className="text-gold hover:underline">free 10-card reading</Link> or the <Link href="/quiz" className="text-gold hover:underline">birthday calculator</Link>.</p>
     </article>
   );
 }

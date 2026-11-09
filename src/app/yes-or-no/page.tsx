@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 
 const ZODIAC_FAQ_LINKS = ZODIAC.slice(0, 2);
 const TOOL_FAQS: { q: string; a: string }[] = [
-  { q: "Is a yes/no tarot reading free here?", a: "Yes — the single-card yes/no tool is completely free with no account required. Full 5-card readings are free 3 times a day, then $1 each." },
+  { q: "Is a yes/no tarot reading free here?", a: "Yes — the single-card yes/no tool is completely free with no account required. Full 10-card readings are free and unlimited, every day." },
   { q: "How is the verdict calculated?", a: "Each card has an upright and reversed verdict from position-aware reading practice — Sun and Aces lean clear yes; most Swords lean no; Twos, Pages and the Moon say 'information needed first'." },
-  { q: "Can I trust a one-card answer for big decisions?", a: "For big, layered decisions, a one-card verdict is a prompt, not a plan. Pair it with the 5-card reading (free twice, then $1) which shows Past, Present, Hidden, Advice and Outcome." },
+  { q: "Can I trust a one-card answer for big decisions?", a: "For big, layered decisions, a one-card verdict is a prompt, not a plan. Pair it with the free 10-card reading, which shows Past, Present, Hidden, Advice and Outcome — plus five deep positions." },
   { q: "What should I ask yes/no tarot?", a: "One decision in one timeframe: 'Should I take Thursday's offer?' works. If the card feels contradictory, your question usually smuggled two questions — rewrite it and draw again after a pause." },
 ];
 
@@ -53,7 +53,7 @@ export default function Page() {
       </section>
 
       <section className="mx-auto mt-14 max-w-2xl text-sm text-white/60">
-        <p>More tools: the <Link href="/quiz" className="text-gold hover:underline">"What tarot card am I" quiz</Link>, the full <Link href="/meanings" className="text-gold hover:underline">78-card meanings hub</Link>, or <Link href="/reading" className="text-gold hover:underline">a free 5-card reading</Link>.</p>
+        <p>More tools: the <Link href="/quiz" className="text-gold hover:underline">"What tarot card am I" quiz</Link>, the full <Link href="/meanings" className="text-gold hover:underline">78-card meanings hub</Link>, or <Link href="/reading" className="text-gold hover:underline">a free 10-card reading</Link>.</p>
         <p className="mt-2">Zodiac curiosity: {ZODIAC_FAQ_LINKS.map((z, i) => <span key={z.sign}>{i > 0 ? " · " : ""}<Link href={`/zodiac/${z.sign.toLowerCase()}`} className="text-gold hover:underline">{z.sign} → {deckById[z.cardId].name}</Link></span>)}</p>
       </section>
     </article>

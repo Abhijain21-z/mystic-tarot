@@ -29,7 +29,7 @@ const ORG_JSONLD = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: { default: "MysticTarot — Free Tarot Card Reading | Discover What the Cards Reveal", template: "%s | MysticTarot Tarot" },
-  description: "Interactive 5-card tarot reading with a full 78-card deck. Love, career, money and spiritual insights. 3 free readings daily.",
+  description: "Interactive 10-card tarot deep reading with a full 78-card deck. Love, career, money and spiritual insights. Free — unlimited, every day.",
   keywords: ["tarot card reading", "free tarot reading", "5 card tarot spread", "tarot meanings", "love tarot", "online tarot"],
   openGraph: { title: "MysticTarot — Tarot Card Reading", description: "Choose five cards. Explore your energy, choices and possibilities.", type: "website" },
 };

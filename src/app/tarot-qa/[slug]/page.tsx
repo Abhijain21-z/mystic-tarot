@@ -13,7 +13,7 @@ export function generateStaticParams() {
 
 function buildLinks(q: string) {
   const links: { label: string; href: string; note: string }[] = [
-    { label: "Try the free 5-card reading", href: "/reading", note: "Pick your life stream — love, career, money & more." },
+    { label: "Try the free 10-card reading", href: "/reading", note: "Pick your life stream — love, career, money & more." },
     { label: "Yes / No tarot", href: "/yes-or-no", note: "One card, one verdict, free." },
     { label: "All 78 card meanings", href: "/meanings", note: "A–Z upright & reversed." },
   ];

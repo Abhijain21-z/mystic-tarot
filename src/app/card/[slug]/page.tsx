@@ -86,7 +86,7 @@ export default async function CardPage({ params }: { params: Promise<{ slug: str
 
       <section className="mt-12">
         <h2 className="mb-4 font-display text-3xl text-gold-soft">Advice from the {spoken}</h2>
-        <p className="text-white/75">{card.advice} In a 5-card MysticTarot reading, the {spoken} typically lands as one of Past, Present, Hidden, Advice or Outcome — decoding <a className="text-gold underline decoration-gold/40 underline-offset-4" href="/reading">with a free reading</a> shows exactly which role it plays for you.</p>
+        <p className="text-white/75">{card.advice} In a MysticTarot 10-card deep reading, the {spoken} typically lands among Past, Present, Hidden, Advice, Outcome — then the five deep positions: What Supports You, The Challenge, Outside Forces, The Next Move and The Final Word. Decoding <a className="text-gold underline decoration-gold/40 underline-offset-4" href="/reading">with a free reading</a> shows exactly which role it plays for you.</p>
       </section>
 
       <section className="mt-12">

@@ -60,7 +60,7 @@ function interpretLocal(card: TarotCard, posIndex: number, reversed: boolean, st
  * (client-safe, no server needed).
  */
 export function readingFromPicks(picked: number[], streamId: string = "final"): ReadingCard[] {
-  // Standard spread = 5 cards; Pro deep spread = up to 10 cards.
+  // Full spread = 10 cards (free for everyone); readingFromPicks accepts up to 10.
   return picked.slice(0, 10).map((wheelIdx, pos) => {
     const card = TAROT_DECK[((wheelIdx % TAROT_DECK.length) + TAROT_DECK.length) % TAROT_DECK.length];
     const reversed = Math.random() < 0.3;

@@ -39,12 +39,12 @@ function Heading({ eyebrow, title, sub }: { eyebrow: string; title: ReactNode; s
 export function HowItWorks() {
   const steps = [
     { icon: RefreshCw, t: "Spin the mystical deck", d: "Set your intention and set the 78-card deck spinning around its glowing orbit.", c: "from-violet to-azure" },
-    { icon: Hand, t: "Choose any 5 cards", d: "Follow your intuition. Pick exactly five face-down cards from the spread.", c: "from-magenta to-violet" },
+    { icon: Hand, t: "Choose any 10 cards", d: "Follow your intuition. Pick exactly ten face-down cards from the spread.", c: "from-magenta to-violet" },
     { icon: Eye, t: "Reveal your personalized reading", d: "Watch each card flip to reveal its position, orientation and meaning for you.", c: "from-gold to-magenta" },
   ];
   return (
     <section id="how" className="relative mx-auto max-w-7xl scroll-mt-24 px-6 py-24">
-      <Heading eyebrow="The Ritual" title={<>How It <span className="text-gradient-gold italic">Works</span></>} sub="Three simple steps between you and your five-card spread." />
+      <Heading eyebrow="The Ritual" title={<>How It <span className="text-gradient-gold italic">Works</span></>} sub="Three simple steps between you and your ten-card deep spread." />
       <div className="relative grid gap-6 md:grid-cols-3">
         <div aria-hidden className="absolute left-0 right-0 top-16 hidden h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent md:block" />
         {steps.map((s, i) => (
@@ -65,11 +65,11 @@ export function HowItWorks() {
 
 export function Features() {
   const f = [
-    { icon: Shuffle, t: "Random tarot card selection", d: "Cryptographically random, 5 unique cards per reading, upright or reversed." },
+    { icon: Shuffle, t: "Random tarot card selection", d: "Cryptographically random, 10 unique cards per reading, upright or reversed." },
     { icon: ScrollText, t: "Detailed card predictions", d: "Summary, deep interpretation, advice, possibilities and cautions for every card." },
     { icon: Heart, t: "Love, career, money & spirit", d: "Four life lenses tailored to each card's position and orientation." },
     { icon: History, t: "Reading history in your profile", d: "Every reading saved with date and time, ready to revisit anytime." },
-    { icon: ShieldCheck, t: "Secure payments & token credits", d: "PayPal-powered checkout. 1 credit = 1 reading. No duplicate charges." },
+    { icon: ShieldCheck, t: "Secure payments & token credits", d: "PayPal-powered checkout. 1 credit = 1 PDF download. No duplicate charges." },
   ];
   return (
     <section className="relative mx-auto max-w-7xl px-6 py-24">
@@ -93,30 +93,30 @@ export function Features() {
 export function Pricing() {
   return (
     <section id="pricing" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 py-24">
-      <Heading eyebrow="Energy Exchange" title={<>Simple, Honest <span className="text-gradient-gold italic">Pricing</span></>} sub="3 free readings every day. Beyond that, 1 tarot reading = 1 credit." />
+      <Heading eyebrow="Energy Exchange" title={<>Simple, Honest <span className="text-gradient-gold italic">Pricing</span></>} sub="Every tarot reading is free — unlimited. The only paid option is a $1 PDF download of your reading." />
       <div className="grid gap-6 md:grid-cols-3">
         <Reveal><div className="glass flex h-full flex-col rounded-3xl p-8">
-          <p className="text-sm uppercase tracking-widest text-azure">Welcome Gift</p>
+          <p className="text-sm uppercase tracking-widest text-azure">Every Reading</p>
           <p className="mt-4 font-display text-6xl">Free</p>
-          <p className="text-white/60">3 free readings daily — for everyone, every day</p>
-          <ul className="my-6 space-y-2 text-sm text-white/75">{["Full 5-card spread", "All life-area insights", "No card required"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
+          <p className="text-white/60">unlimited readings — for everyone, every day</p>
+          <ul className="my-6 space-y-2 text-sm text-white/75">{["Full 10-card deep spread", "All life-area insights", "No signup needed"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
           <Link href="/reading" className="btn-ghost mt-auto rounded-full px-6 py-3 text-center">Start Free Reading</Link>
         </div></Reveal>
         <Reveal delay={0.1}><div className="glass flex h-full flex-col rounded-3xl p-8">
-          <p className="text-sm uppercase tracking-widest text-magenta">Pay As You Go</p>
+          <p className="text-sm uppercase tracking-widest text-magenta">PDF Download</p>
           <p className="mt-4 font-display text-6xl">$1 <span className="text-lg text-white/50">USD</span></p>
-          <p className="text-white/60">per reading, from the 3rd reading onward</p>
-          <ul className="my-6 space-y-2 text-sm text-white/75">{["1 credit = 1 reading", "Secure PayPal checkout", "Saved to your history"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
-          <div className="mt-auto"><BuyButton pack="single" className="btn-ghost">Buy 1 Credit — $1</BuyButton></div>
+          <p className="text-white/60">one beautifully formatted PDF of any reading</p>
+          <ul className="my-6 space-y-2 text-sm text-white/75">{["1 credit = 1 PDF download", "Parchment-styled keepsake", "Print it, save it forever"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
+          <div className="mt-auto"><BuyButton pack="single" className="btn-ghost">Get a PDF Credit — $1</BuyButton></div>
         </div></Reveal>
         <Reveal delay={0.2}><div className="relative flex h-full flex-col rounded-3xl bg-gradient-to-b from-gold/60 via-violet/50 to-magenta/50 p-px">
           <div className="flex h-full flex-col rounded-3xl bg-[#140a26]/95 p-8">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-xs font-semibold text-ink">Best Value · $0.50/reading</span>
+            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-xs font-semibold text-ink">Best Value · $0.50/PDF</span>
             <p className="text-sm uppercase tracking-widest text-gold">Seer&apos;s Package</p>
             <p className="mt-4 font-display text-6xl">$50 <span className="text-lg text-white/50">USD</span></p>
-            <p className="text-white/60">100 credits = 100 readings</p>
-            <ul className="my-6 space-y-2 text-sm text-white/75">{["Credits never expire", "50% savings vs single", "Priority new features"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
-            <div className="mt-auto"><BuyButton pack="pack500" className="btn-glow">Buy 100 Credits</BuyButton></div>
+            <p className="text-white/60">100 credits = 100 PDF downloads</p>
+            <ul className="my-6 space-y-2 text-sm text-white/75">{["Credits never expire", "50% savings per PDF", "Priority new features"].map((t) => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-gold" />{t}</li>)}</ul>
+            <div className="mt-auto"><BuyButton pack="pack500" className="btn-glow">Buy 100 PDF Credits</BuyButton></div>
           </div>
         </div></Reveal>
       </div>

@@ -55,7 +55,7 @@ export default function Hero() {
       <motion.div style={{ y, opacity: op }} className="mx-auto grid w-full max-w-7xl items-center gap-10 px-6 lg:grid-cols-2">
         <div className="text-center lg:text-left">
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-gold-soft">
-            <Sparkles className="h-3.5 w-3.5" /> 78-card deck · 3 free readings daily
+            <Sparkles className="h-3.5 w-3.5" /> 78-card deck · free readings, unlimited
           </motion.p>
           <h1 className="font-display text-5xl font-semibold leading-[1.02] sm:text-6xl xl:text-7xl">
             {"Free Tarot Card Reading".split(" ").map((w, i) => (
@@ -63,7 +63,7 @@ export default function Hero() {
             ))}
           </h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="mx-auto mt-6 max-w-lg text-lg text-white/70 lg:mx-0">
-            <b className="text-gold-soft">Free tarot card reading prediction</b> — uncover what the cards say about your <b className="text-gold-soft">love, career, money, family, business &amp; emotions</b> with a dedicated 5-card spread. Pick your life stream and get answers in minutes. 3 free readings every day.
+            <b className="text-gold-soft">Free tarot card reading prediction</b> — uncover what the cards say about your <b className="text-gold-soft">love, career, money, family, business &amp; emotions</b> with a dedicated 10-card deep spread. Pick your life stream and get answers in minutes. Free — unlimited, every day.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
             <Link href="/reading" className="btn-glow rounded-full px-8 py-4 text-base" aria-label="Check your tarot cards">Check Your Tarot Cards</Link>
