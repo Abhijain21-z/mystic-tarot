@@ -3,8 +3,8 @@ import { payments, users } from "@/db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
 export const PACKS = {
-  single: { label: "1 Reading Credit", credits: 1, amountCents: 100 },
-  pack500: { label: "100 Reading Credits", credits: 100, amountCents: 5000 },
+  single: { label: "1 PDF Credit", credits: 1, amountCents: 100 },
+  pack500: { label: "100 PDF Credits", credits: 100, amountCents: 5000 },
 } as const;
 export type PackKey = keyof typeof PACKS;
 

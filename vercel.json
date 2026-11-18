@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "tarotwin.com" }],
+      "destination": "https://www.tarotwin.com/",
+      "permanent": true
+    }
+  ]
+}
