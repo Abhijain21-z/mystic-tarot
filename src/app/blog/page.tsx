@@ -6,8 +6,8 @@ import { SITE } from "@/data/seo-data";
 
 export const metadata: Metadata = {
   title: { absolute: "Tarot Blog — Guides on Faith, Accuracy, Money, Zodiac & Comparisons" },
-  description: "The MysticTarot journal: honest deep-dives on are-tarot-cards-evil, how tarot works, tarot vs astrology/psychic/oracle, reading cost, beginner how-tos and zodiac pairings.",
-  keywords: ["tarot blog", "tarot guides", "how to read tarot", "tarot vs astrology", "tarot card questions"],
+  description: "Free tarot guides for love, career, money and spreads, plus honest answers on faith, accuracy, yes/no readings, costs, comparisons and zodiac pairings.",
+  keywords: ["tarot blog", "free tarot reading online", "love tarot reading", "career tarot reading", "money tarot reading", "tarot spreads for beginners", "how to read tarot", "tarot vs astrology"],
   alternates: { canonical: "/blog" },
 };
 
@@ -21,7 +21,7 @@ export default function Page() {
         blogPost: BLOG.map((b) => ({ "@type": "BlogPosting", headline: b.title, url: `${SITE.url}/blog/${b.slug}` })),
       }} />
       <h1 className="text-center font-display text-5xl">The Tarot <span className="text-gradient-gold">Journal</span></h1>
-      <p className="mx-auto mt-3 max-w-xl text-center text-white/60">Plain-spoken guides across the five big questions of tarot: faith, accuracy, comparisons, cost and craft.</p>
+      <p className="mx-auto mt-3 max-w-xl text-center text-white/60">Plain-spoken guides on love, career, money and spreads — plus faith, accuracy, comparisons, cost and craft.</p>
       {clusters.map((cluster) => (
         <section key={cluster} className="mt-12">
           <h2 className="mb-4 font-display text-3xl text-gold-soft">{cluster}</h2>

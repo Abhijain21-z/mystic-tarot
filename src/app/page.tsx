@@ -8,7 +8,8 @@ import { ZODIAC } from "@/data/seo";
 
 export const metadata: Metadata = {
   title: { absolute: "Free Tarot Card Reading for Love, Career & Money — MysticTarot" },
-  description: "Free tarot card reading to predict your love life, career, money, family, business and emotions. Dedicated 10-card deep spreads per life stream from the full 78-card Rider–Waite deck — free, unlimited, every day.",
+  description: "Free tarot card reading online for love, career, money, family and emotions. Full 10-card deep spread from the 78-card Rider–Waite deck — no signup, unlimited, every day. Optional $1 PDF report.",
+  keywords: ["free tarot card reading", "free tarot reading online", "tarot reading for love", "career tarot reading", "money tarot reading", "yes or no tarot", "3 card tarot spread", "tarot card meanings", "tarot reading no signup", "what is my tarot card"],
   alternates: { canonical: "/" },
 };
 
@@ -18,6 +19,13 @@ const HOME_FAQS = [
   { q: "Can I get a tarot reading near me without visiting a reader?", a: "Yes — MysticTarot is fully online: an instant 10-card reading from any city, on demand, private, cheaper than an in-person session." },
   { q: "Can tarot cards answer yes or no questions?", a: "They can: our free Yes/No tool deals one card with an upright/reversed verdict and the reason behind it." },
   { q: "What tarot card matches my zodiac sign?", a: "Aries pairs with The Emperor through Pisces with The Moon — see the zodiac guide or enter your birthday in the calculator for both your sign card and a personal-year card." },
+  { q: "Where can I get a free tarot reading online with no signup?", a: "Right here — guests get the full 10-card deep spread instantly, with every card's upright and reversed meaning, and no registration. An account is only needed to save history or download the $1 PDF report." },
+  { q: "What is a love tarot reading?", a: "A love reading puts your relationship question into positions — how each person feels, what sits between you, what to do next and where the bond is heading. It maps the dynamic; it does not name a person or a wedding date." },
+  { q: "Can tarot help with a career or job decision?", a: "Yes, as structured reflection. A career spread separates what keeps you in a role, what pulls you away, the hidden factor and your best next move — without pretending to know an employer's private decision." },
+  { q: "Can tarot give me guidance about money?", a: "It can reveal patterns in how you earn, spend and avoid money, especially through the Pentacles cards. It cannot predict markets or replace a financial professional." },
+  { q: "What is a 3-card tarot spread?", a: "Three cards drawn for Past, Present and Future offer a quick timeline for one question. Future means the path if nothing changes — so the reading is a chance to adjust, not a fixed forecast." },
+  { q: "Will my ex come back according to tarot?", a: "Tarot cannot make someone return or name the day they will text. It can show the current momentum, what remains unresolved and what a return would require — so you can decide what is actually worth doing." },
+  { q: "What is my tarot card for today?", a: "Your card for today is the single card you draw when you ask 'what deserves my attention today?' It is a daily check-in, not an identity label — use the birthday quiz for your zodiac and numerology cards." },
 ];
 
 export default function Home() {
@@ -39,12 +47,30 @@ export default function Home() {
             { href: "/meanings", t: "All 78 Card Meanings A–Z", d: "Upright, reversed, love, career, money." },
             { href: "/tarot-reading-near-me", t: "Reading Near Me", d: "35 cities, online in the same minute." },
             { href: "/faq", t: "Tarot Questions & Answers", d: "Evil? Real? Accurate? All asked, answered." },
-            { href: "/blog", t: "The Tarot Journal", d: `Guides from ${["faith", "cost", "comparisons", "how-to"].join(", ")} and beyond.` },
+            { href: "/blog", t: "The Tarot Journal", d: "Guides on love, career, money, spreads, faith, cost and more." },
           ].map((x) => (
             <Link key={x.href} href={x.href} className="glass group rounded-3xl p-6 transition hover:border-gold/50">
               <p className="font-display text-2xl text-gold-soft group-hover:text-gold">{x.t}</p>
               <p className="mt-2 text-sm text-white/65">{x.d}</p>
             </Link>
+          ))}
+        </div>
+        <h3 className="mt-12 text-center font-display text-2xl text-gold-soft">Popular tarot searches</h3>
+        <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-white/60">Start with the question on your mind — every reading below is free and unlimited, with full card meanings one click away.</p>
+        <div className="mt-5 flex flex-wrap justify-center gap-2">
+          {[
+            { href: "/reading", t: "Free tarot card reading online" },
+            { href: "/blog/free-love-tarot-reading-online", t: "Love tarot reading" },
+            { href: "/blog/will-my-ex-come-back-tarot", t: "Will my ex come back" },
+            { href: "/blog/free-career-tarot-reading", t: "Career tarot reading" },
+            { href: "/blog/tarot-reading-for-money-finance", t: "Money tarot reading" },
+            { href: "/blog/3-card-tarot-spread-past-present-future", t: "3-card tarot spread" },
+            { href: "/yes-or-no", t: "Yes or no tarot" },
+            { href: "/quiz", t: "What tarot card am I" },
+            { href: "/meanings", t: "Tarot card meanings" },
+            { href: "/blog/tarot-reading-no-signup", t: "Tarot without signup" },
+          ].map((x) => (
+            <Link key={x.href} href={x.href} className="glass rounded-full px-4 py-1.5 text-sm text-white/70 hover:text-gold">{x.t}</Link>
           ))}
         </div>
         <h3 className="mt-12 text-center font-display text-2xl text-gold-soft">Arriving at the temple soon</h3>
